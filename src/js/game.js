@@ -1,22 +1,21 @@
 (function() {
-  'use strict';
+	'use strict';
 
-  function Game() {}
+	function Game() {}
 
-  Game.prototype = {
-    create: function () {
-      this.input.onDown.add(this.onInputDown, this);
-    },
+	Game.prototype = {
+		create: function () {
+			this.game.stage.backgroundColor = 0x333333;
+		},
 
-    update: function () {
+		update: function () {
 
-    },
+		},
 
-    onInputDown: function () {
-      this.game.state.start('menu');
-    }
-  };
+		onInputDown: function () {
+		}
+	};
 
-  window['space-boats'] = window['space-boats'] || {};
-  window['space-boats'].Game = Game;
+	window['space-boats'] = window['space-boats'] || {};
+	window['space-boats'].Game = Game;
 }());

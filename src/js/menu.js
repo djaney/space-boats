@@ -1,26 +1,26 @@
 (function() {
-  'use strict';
+	'use strict';
 
-  function Menu() {}
+	function Menu() {}
 
-  Menu.prototype = {
-    create: function () {
-      var text = this.add.text(this.game.width * 0.5, this.game.height * 0.5,
-        'MENU', {font: '42px Arial', fill: '#ffffff', align: 'center'
-      });
-      text.anchor.set(0.5);
-      this.input.onDown.add(this.onDown, this);
-    },
+	Menu.prototype = {
+		create: function () {
+			var text = this.add.text(this.game.width * 0.5, this.game.height * 0.5,
+				'START', {font: '42px Arial', fill: '#ffffff', align: 'center'
+			});
+			text.anchor.set(0.5);
+			this.input.onDown.add(this.onDown, this);
+		},
 
-    update: function () {
+		update: function () {
 
-    },
+		},
 
-    onDown: function () {
-      this.game.state.start('game');
-    }
-  };
+		onDown: function () {
+			this.game.state.start('game');
+		}
+	};
 
-  window['space-boats'] = window['space-boats'] || {};
-  window['space-boats'].Menu = Menu;
+	window['space-boats'] = window['space-boats'] || {};
+	window['space-boats'].Menu = Menu;
 }());
