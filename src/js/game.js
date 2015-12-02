@@ -13,35 +13,32 @@
 	Game.prototype.preload = function() {
 		this.game.time.advancedTiming = true;
 	    this.game.load.spritesheet('ship', '/assets/ship.png', 32, 32);
+		this.game.load.image('starfield', '/assets/starfield.gif');
 	};
 
 	// Setup the example
 	Game.prototype.create = function() {
 
 		// generate stars
-		var tinyStar = this.game.add.bitmapData(1,1);
-		tinyStar.ctx.fillStyle = '#999999';
-		tinyStar.ctx.rect(0,0,1,1);
-		tinyStar.ctx.fill();
-		this.tinyStar = this.game.add.sprite(0, 0, tinyStar);
-		this.starTexture = this.game.add.renderTexture(this.worldSize, this.worldSize, 'starTexture');
-		this.bgStars = this.game.add.sprite(0, 0, this.starTexture);
-		for (var i = 0; i < this.starCount; i++){
-			var s = 0;
-			var t = this.starTexture;
-			var x = Math.floor(Math.random() * this.worldSize);
-			var y = Math.floor(Math.random() * this.worldSize);
-			var loopProgress = i / this.starCount;
-			if(loopProgress < 0.80){
-				s = 0.1;
-			}else if(loopProgress < 0.90){
-				s = 0.2;
-			}else{
-				s = 0.7;
-			}
+		// var tinyStar = this.game.add.graphics(0, 0);
+	    // tinyStar.beginFill(0xFFFFFF, 1);
+	    // tinyStar.drawRect(1, 1, 1, 1);
+		//
+		// // this.tinyStar = this.game.add.sprite(0, 0, tinyStar);
+		// this.tinyStar = tinyStar;
+		// this.starTexture = this.game.add.renderTexture(this.worldSize, this.worldSize, 'starTexture');
+		// this.bgStars = this.game.add.sprite(0, 0, this.starTexture);
+		// for (var i = 0; i < this.starCount; i++){
+		// 	var s = 0.1;
+		// 	var t = this.starTexture;
+		// 	var x = Math.floor(Math.random() * this.worldSize);
+		// 	var y = Math.floor(Math.random() * this.worldSize);
+		// 	var loopProgress = i / this.starCount;
+		//
+		// 	this.stars.push( { x: x, y: y, speed: s, texture: t, sprite: this.tinyStar });
+		// }
 
-			this.stars.push( { x: x, y: y, speed: s, texture: t, sprite: this.tinyStar });
-		}
+		this.bgStars = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'starfield');
 
 		// create player
 		this.player = new ns.obj.SpaceObject(this.game,'ship', this.game.width/2, this.game.height/2, 180, 200, 250);
@@ -67,34 +64,37 @@
 		this.game.world.setBounds((this.worldSize/2*-1) + this.player.spr.x, (this.worldSize/2*-1) + this.player.spr.y, this.worldSize, this.worldSize);
 
 
-		var playerVelocity = this.player.spr.body.newVelocity;
-		for (var i = 0; i < this.stars.length; i++){
-			//  Update the stars y position based on its speed
+		// var playerVelocity = this.player.spr.body.newVelocity;
+		// for (var i = 0; i < this.stars.length; i++){
+		// 	//  Update the stars y position based on its speed
+		//
+		//
+		// 	if (this.stars[i].x > this.worldSize) {
+		// 		this.stars[i].x = 0;
+		// 	}
+		// 	if (this.stars[i].x < 0) {
+		// 		this.stars[i].x = this.worldSize;
+		// 	}
+		//
+		// 	if (this.stars[i].y > this.worldSize) {
+		// 		this.stars[i].y = 0;
+		// 	}
+		// 	if (this.stars[i].y < 0) {
+		// 		this.stars[i].y = this.worldSize;
+		// 	}
+		//
+		// 	this.stars[i].x -= playerVelocity.x * this.stars[i].speed;
+		// 	this.stars[i].y -= playerVelocity.y * this.stars[i].speed;
+		// 	this.stars[i].texture.renderXY(this.stars[i].sprite, this.stars[i].x, this.stars[i].y, i === 0);
+		//
+		// }
+		// this.bgStars.x = (this.worldSize/2*-1) + this.player.spr.x;
+		// this.bgStars.y = (this.worldSize/2*-1) + this.player.spr.y;
 
-
-			if (this.stars[i].x > this.worldSize) {
-				this.stars[i].x = 0;
-			}
-			if (this.stars[i].x < 0) {
-				this.stars[i].x = this.worldSize;
-			}
-
-			if (this.stars[i].y > this.worldSize) {
-				this.stars[i].y = 0;
-			}
-			if (this.stars[i].y < 0) {
-				this.stars[i].y = this.worldSize;
-			}
-
-			this.stars[i].x -= playerVelocity.x * this.stars[i].speed;
-			this.stars[i].y -= playerVelocity.y * this.stars[i].speed;
-			this.stars[i].texture.renderXY(this.stars[i].sprite, this.stars[i].x, this.stars[i].y, i === 0);
-
-		}
-		this.bgStars.x = (this.worldSize/2*-1) + this.player.spr.x;
-		this.bgStars.y = (this.worldSize/2*-1) + this.player.spr.y;
-
-
+		this.bgStars.tilePosition.x = -this.player.spr.x;
+		this.bgStars.tilePosition.y = -this.player.spr.y;
+		this.bgStars.x = this.player.spr.x - (this.game.width/2);
+		this.bgStars.y = this.player.spr.y - (this.game.height/2);
 	};
 
 	Game.prototype.render = function(){
