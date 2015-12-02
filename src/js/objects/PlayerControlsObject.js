@@ -24,14 +24,9 @@
 	PlayerControlsObject.prototype.constructor = PlayerControlsObject;
 	/**
 	 * Watch the input stream. Must be called in game state update
-	 * @method watchInput
+	 * @method update
 	 */
-	PlayerControlsObject.prototype.watchInput = function(){
-		// Keep the ship on the screen
-	    if (this.player.spr.x > this.game.world.width) {this.player.spr.x = 0;}
-	    if (this.player.spr.x < 0) {this.player.spr.x = this.game.world.width;}
-	    if (this.player.spr.y > this.game.world.height) {this.player.spr.y = 0;}
-	    if (this.player.spr.y < 0) {this.player.spr.y = this.game.world.height;}
+	PlayerControlsObject.prototype.update = function(){
 
 	    if (this.leftInputIsActive()) {
 	        // If the LEFT key is down, rotate left

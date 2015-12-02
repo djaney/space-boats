@@ -35,6 +35,15 @@
 	SpaceObject.prototype = new ns.obj.GameObject();
 	SpaceObject.prototype.constructor = SpaceObject;
 
+	SpaceObject.prototype.update = function(){
+		// warp space objects if out of bounds
+		if (this.spr.x > this.game.world.bounds.x + this.game.world.bounds.width) {this.spr.x = this.game.world.bounds.x;}
+		if (this.spr.x < this.game.world.bounds.x) {this.spr.x = this.game.world.bounds.x + this.game.world.bounds.width;}
+		if (this.spr.y > this.game.world.bounds.y + this.game.world.bounds.height) {this.spr.y = this.game.world.bounds.y;}
+		if (this.spr.y < this.game.world.bounds.y) {this.spr.y = this.game.world.bounds.y + this.game.world.bounds.height;}
+	};
+
+
 	window['space-boats'] = window['space-boats'] || {};
 	window['space-boats'].obj = window['space-boats'].obj || {};
 	window['space-boats'].obj.SpaceObject = SpaceObject;

@@ -32,7 +32,9 @@
 	// The update() method is called every frame
 	Game.prototype.update = function() {
 		// watch keys
-		this.controls.watchInput();
+		this.controls.update();
+		console.log(this.player);
+		this.player.update();
 		this.game.world.setBounds((this.worldSize/2*-1) + this.player.spr.x, (this.worldSize/2*-1) + this.player.spr.y, this.worldSize, this.worldSize);
 	};
 
