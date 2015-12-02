@@ -21,6 +21,9 @@
 		this.player.spr.anchor.setTo(0.5, 0.5);
 	    this.player.spr.angle = -90; // Point the ship up
 
+		this.game.world.setBounds(0, 0, 2000, 2000);
+		// this.game.camera.deadzone = new Phaser.Rectangle(this.game.camera.width,this.game.camera.height,1,1);
+		this.game.camera.follow(this.player.spr,Phaser.Camera.FOLLOW_LOCKON);
 
 	};
 
@@ -28,6 +31,11 @@
 	Game.prototype.update = function() {
 		// watch keys
 		this.controls.watchInput();
+	};
+
+	Game.prototype.render = function(){
+		this.game.debug.cameraInfo(this.game.camera, 32, 32);
+		this.game.debug.spriteCoords(this.player.spr, 32, 500);
 	};
 
 
