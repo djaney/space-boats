@@ -11,7 +11,6 @@
 	Game.prototype.preload = function() {
 		this.game.time.advancedTiming = true;
 	    this.game.load.spritesheet('ship', '/assets/ship.png', 32, 32);
-		this.game.load.image('star01', '/assets/star01.png');
 	};
 
 	// Setup the example
@@ -32,7 +31,11 @@
 		this.game.camera.follow(this.player.spr);
 
 		// generate stars
-		this.star01 = this.game.make.sprite(0, 0, 'star01');
+		var tinyStar = this.game.add.bitmapData(1,1);
+		tinyStar.ctx.fillStyle = '#999999';
+		tinyStar.ctx.rect(0,0,1,1);
+		tinyStar.ctx.fill();
+		this.tinyStar = this.game.add.sprite(0, 0, tinyStar);
 		this.starTexture = this.game.add.renderTexture(this.worldSize, this.worldSize, 'starTexture');
 		this.bgStars = this.game.add.sprite(0, 0, this.starTexture);
 		for (var i = 0; i < 300; i++){
@@ -40,7 +43,7 @@
 			var t = this.starTexture;
 			var x = Math.floor(Math.random() * this.worldSize);
 			var y = Math.floor(Math.random() * this.worldSize);
-			this.stars.push( { x: x, y: y, speed: s, texture: t, sprite: this.star01 });
+			this.stars.push( { x: x, y: y, speed: s, texture: t, sprite: this.tinyStar });
 		}
 
 	};
@@ -84,8 +87,8 @@
 	};
 
 	Game.prototype.render = function(){
-		this.game.debug.text('x: '+(this.player.spr.body.newVelocity.x || '--'), 2, 14, "#00ff00");
-		this.game.debug.text('y: '+(this.player.spr.body.newVelocity.y || '--'), 2, 27, "#00ff00");
+		this.game.debug.text('x: '+(this.player.spr.x || '--'), 2, 14, "#00ff00");
+		this.game.debug.text('y: '+(this.player.spr.y || '--'), 2, 27, "#00ff00");
 	};
 
 
