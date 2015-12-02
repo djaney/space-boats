@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-
+	
 	/**
-	 * Root of all game objects
+	 * Game object root class
 	 */
 	function GameObject() {}
 
