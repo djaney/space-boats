@@ -2,7 +2,16 @@
 	'use strict';
 	var ns = window['space-boats'];
 
-
+	/**
+	 * Objects that float in space
+	 * @param {object} game           [description]
+	 * @param {string} sprName        name of sprite
+	 * @param {number} x              position in x-axis
+	 * @param {number} y              position in y-axis
+	 * @param {number} ROTATION_SPEED rotation speed in degrees/second
+	 * @param {number} ACCELERATION   acceleration in pixels/second^2
+	 * @param {number} MAX_SPEED      speed in pixels/second
+	 */
 	function SpaceObject(game,sprName, x, y, ROTATION_SPEED, ACCELERATION, MAX_SPEED) {
 		this.game = game;
 		this.sprName = sprName;

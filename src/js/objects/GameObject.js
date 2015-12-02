@@ -1,6 +1,9 @@
 (function() {
 	'use strict';
 
+	/**
+	 * Root of all game objects
+	 */
 	function GameObject() {}
 
 
