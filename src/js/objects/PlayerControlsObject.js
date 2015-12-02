@@ -30,10 +30,10 @@
 
 	    if (this.leftInputIsActive()) {
 	        // If the LEFT key is down, rotate left
-	        this.player.spr.body.angularVelocity = -this.player.ROTATION_SPEED;
+	        this.player.spr.body.angularVelocity = -this.player.rotationSpeed;
 	    } else if (this.rightInputIsActive()) {
 	        // If the RIGHT key is down, rotate right
-	        this.player.spr.body.angularVelocity = this.player.ROTATION_SPEED;
+	        this.player.spr.body.angularVelocity = this.player.rotationSpeed;
 	    } else {
 	        // Stop rotating
 	        this.player.spr.body.angularVelocity = 0;
@@ -42,8 +42,8 @@
 	    if (this.upInputIsActive()) {
 	        // If the UP key is down, thrust
 	        // Calculate acceleration vector based on this.angle and this.ACCELERATION
-	        this.player.spr.body.acceleration.x = Math.cos(this.player.spr.rotation) * this.player.ACCELERATION;
-	        this.player.spr.body.acceleration.y = Math.sin(this.player.spr.rotation) * this.player.ACCELERATION;
+	        this.player.spr.body.acceleration.x = Math.cos(this.player.spr.rotation) * this.player.acceleration;
+	        this.player.spr.body.acceleration.y = Math.sin(this.player.spr.rotation) * this.player.acceleration;
 
 	        // Show the frame from the spritesheet with the engine on
 	        this.player.spr.frame = 1;
