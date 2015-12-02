@@ -15,6 +15,9 @@
 
 		this.player = new ns.obj.SpaceObject(this.game,'ship', this.game.width/2, this.game.height/2, 180, 200, 250);
 
+		// some sprite settings
+		this.player.spr.anchor.setTo(0.5, 0.5);
+	    this.player.spr.angle = -90; // Point the ship up
 
 	    // Capture certain keys to prevent their default actions in the browser.
 	    // This is only necessary because this is an HTML5 game. Games on other

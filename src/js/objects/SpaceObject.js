@@ -23,8 +23,7 @@
 
 		// Add the ship to the stage
 	    this.spr = this.game.add.sprite(this.x, this.y, this.sprName);
-	    this.spr.anchor.setTo(0.5, 0.5);
-	    this.spr.angle = -90; // Point the ship up
+
 
 		// Enable physics on the ship
 	    this.game.physics.enable(this.spr, Phaser.Physics.ARCADE);
