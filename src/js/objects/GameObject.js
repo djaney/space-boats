@@ -1,8 +1,9 @@
 (function() {
 	'use strict';
-	
+
 	/**
 	 * Game object root class
+	 * @class GameObject
 	 */
 	function GameObject() {}
 

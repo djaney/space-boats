@@ -4,6 +4,7 @@
 
 	/**
 	 * Objects that float in space
+	 * @class SpaceObject
 	 * @param {object} game           [description]
 	 * @param {string} sprName        name of sprite
 	 * @param {number} x              position in x-axis

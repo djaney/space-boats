@@ -3,6 +3,7 @@
 	var ns = window['space-boats'];
 	/**
 	 * Handle controls
+	 * @class PlayerControlsObject
 	 * @param {object} game   game object
 	 * @param {object} player SpaceObject to control
 	 */
@@ -21,7 +22,10 @@
 	}
 	PlayerControlsObject.prototype = new ns.obj.GameObject();
 	PlayerControlsObject.prototype.constructor = PlayerControlsObject;
-
+	/**
+	 * Watch the input stream. Must be called in game state update
+	 * @method watchInput
+	 */
 	PlayerControlsObject.prototype.watchInput = function(){
 		// Keep the ship on the screen
 	    if (this.player.spr.x > this.game.width) {this.player.spr.x = 0;}
@@ -58,9 +62,14 @@
 	}
 
 
-	// This function should return true when the player activates the "go left" control
-	// In this case, either holding the right arrow or tapping or clicking on the left
-	// side of the screen.
+
+	/**
+	 * This function should return true when the player activates the "go left" control
+	 * In this case, either holding the right arrow or tapping or clicking on the left
+	 * side of the screen.
+	 * @method leftInputIsActive
+	 * @return {boolean}
+	 */
 	PlayerControlsObject.prototype.leftInputIsActive = function() {
 	    var isActive = false;
 
@@ -71,9 +80,13 @@
 	    return isActive;
 	};
 
-	// This function should return true when the player activates the "go right" control
-	// In this case, either holding the right arrow or tapping or clicking on the right
-	// side of the screen.
+	/**
+	 * This function should return true when the player activates the "go right" control
+	 * In this case, either holding the right arrow or tapping or clicking on the right
+	 * side of the screen.
+	 * @method rightInputIsActive
+	 * @return {boolean}
+	 */
 	PlayerControlsObject.prototype.rightInputIsActive = function() {
 	    var isActive = false;
 
@@ -84,9 +97,14 @@
 	    return isActive;
 	};
 
-	// This function should return true when the player activates the "jump" control
-	// In this case, either holding the up arrow or tapping or clicking on the center
-	// part of the screen.
+
+	/**
+	 * This function should return true when the player activates the "jump" control
+	 * In this case, either holding the up arrow or tapping or clicking on the center
+	 * part of the screen.
+	 * @method upInputIsActive
+	 * @return {boolean}
+	 */
 	PlayerControlsObject.prototype.upInputIsActive = function() {
 	    var isActive = false;
 
