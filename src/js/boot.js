@@ -24,6 +24,7 @@
 				this.game.scale.pageAlignHorizontally = true;
 				this.game.scale.setScreenSize(true);
 			}
+			this.game.scale.startFullScreen();
 			this.game.state.start('preloader');
 		}
 	};

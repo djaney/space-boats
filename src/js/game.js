@@ -2,7 +2,9 @@
 	'use strict';
 	var ns = window['space-boats'];
 	function Game() {
-		this.worldSize = 1000;
+		this.worldSize = 640;
+		this.starCount = 300;
+
 		this.cameraPos = new Phaser.Point(0, 0);
 		this.stars = [];
 	}
@@ -16,7 +18,30 @@
 	// Setup the example
 	Game.prototype.create = function() {
 
+		// generate stars
+		var tinyStar = this.game.add.bitmapData(1,1);
+		tinyStar.ctx.fillStyle = '#999999';
+		tinyStar.ctx.rect(0,0,1,1);
+		tinyStar.ctx.fill();
+		this.tinyStar = this.game.add.sprite(0, 0, tinyStar);
+		this.starTexture = this.game.add.renderTexture(this.worldSize, this.worldSize, 'starTexture');
+		this.bgStars = this.game.add.sprite(0, 0, this.starTexture);
+		for (var i = 0; i < this.starCount; i++){
+			var s = 0;
+			var t = this.starTexture;
+			var x = Math.floor(Math.random() * this.worldSize);
+			var y = Math.floor(Math.random() * this.worldSize);
+			var loopProgress = i / this.starCount;
+			if(loopProgress < 0.80){
+				s = 0.1;
+			}else if(loopProgress < 0.90){
+				s = 0.2;
+			}else{
+				s = 0.7;
+			}
 
+			this.stars.push( { x: x, y: y, speed: s, texture: t, sprite: this.tinyStar });
+		}
 
 		// create player
 		this.player = new ns.obj.SpaceObject(this.game,'ship', this.game.width/2, this.game.height/2, 180, 200, 250);
@@ -30,21 +55,7 @@
 
 		this.game.camera.follow(this.player.spr);
 
-		// generate stars
-		var tinyStar = this.game.add.bitmapData(1,1);
-		tinyStar.ctx.fillStyle = '#999999';
-		tinyStar.ctx.rect(0,0,1,1);
-		tinyStar.ctx.fill();
-		this.tinyStar = this.game.add.sprite(0, 0, tinyStar);
-		this.starTexture = this.game.add.renderTexture(this.worldSize, this.worldSize, 'starTexture');
-		this.bgStars = this.game.add.sprite(0, 0, this.starTexture);
-		for (var i = 0; i < 300; i++){
-			var s = 1;
-			var t = this.starTexture;
-			var x = Math.floor(Math.random() * this.worldSize);
-			var y = Math.floor(Math.random() * this.worldSize);
-			this.stars.push( { x: x, y: y, speed: s, texture: t, sprite: this.tinyStar });
-		}
+
 
 	};
 
@@ -77,7 +88,7 @@
 
 			this.stars[i].x -= playerVelocity.x * this.stars[i].speed;
 			this.stars[i].y -= playerVelocity.y * this.stars[i].speed;
-			this.stars[i].texture.renderXY(this.stars[i].sprite, this.stars[i].x, this.stars[i].y, i == 0);
+			this.stars[i].texture.renderXY(this.stars[i].sprite, this.stars[i].x, this.stars[i].y, i === 0);
 
 		}
 		this.bgStars.x = (this.worldSize/2*-1) + this.player.spr.x;
@@ -87,8 +98,9 @@
 	};
 
 	Game.prototype.render = function(){
-		this.game.debug.text('x: '+(this.player.spr.x || '--'), 2, 14, "#00ff00");
-		this.game.debug.text('y: '+(this.player.spr.y || '--'), 2, 27, "#00ff00");
+		this.game.debug.text('x: '+(this.player.spr.x || '--'), 2, 16, '#00ff00');
+		this.game.debug.text('y: '+(this.player.spr.y || '--'), 2, 16 * 2, '#00ff00');
+		this.game.debug.text('fps: '+(this.game.time.fps || '--'), 2, 16 * 3, '#00ff00');
 	};
 
 
