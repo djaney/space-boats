@@ -1,8 +1,4 @@
 {
-    "name": "The Foo API",
-    "description": "The Foo API: a library for doing X, Y, and Z",
-    "version": "1.2.1",
-    "url": "http://example.com/",
     "options": {
         "outdir": "docs",
 		"exclude": "bower_components",
