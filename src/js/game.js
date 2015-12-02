@@ -1,7 +1,9 @@
 (function() {
 	'use strict';
 	var ns = window['space-boats'];
-	function Game() {}
+	function Game() {
+		this.worldSize = 1000;
+	}
 
 	// Load images and sounds
 	Game.prototype.preload = function() {
@@ -21,7 +23,7 @@
 		this.player.spr.anchor.setTo(0.5, 0.5);
 	    this.player.spr.angle = -90; // Point the ship up
 
-		this.game.world.setBounds(0, 0, 2000, 2000);
+
 		// this.game.camera.deadzone = new Phaser.Rectangle(this.game.camera.width,this.game.camera.height,1,1);
 		this.game.camera.follow(this.player.spr,Phaser.Camera.FOLLOW_LOCKON);
 
@@ -31,11 +33,12 @@
 	Game.prototype.update = function() {
 		// watch keys
 		this.controls.watchInput();
+		this.game.world.setBounds((this.worldSize/2*-1) + this.player.spr.x, (this.worldSize/2*-1) + this.player.spr.y, this.worldSize, this.worldSize);
 	};
 
 	Game.prototype.render = function(){
-		this.game.debug.cameraInfo(this.game.camera, 32, 32);
 		this.game.debug.spriteCoords(this.player.spr, 32, 500);
+		this.game.debug.cameraInfo(this.game.camera, 32, 32);
 	};
 
 
