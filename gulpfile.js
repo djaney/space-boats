@@ -8,7 +8,7 @@ var gulp = require('gulp')
   , processhtml = require('gulp-processhtml')
   , jshint = require('gulp-jshint')
   , uglify = require('gulp-uglify')
-  , connect = require('gulp-connect')
+  , server = require('gulp-express')
   , paths;
 
 paths = {
@@ -79,21 +79,20 @@ gulp.task('lint', function() {
 
 gulp.task('html', function(){
   gulp.src('src/*.html')
-    .pipe(connect.reload())
+    .pipe(server.notify())
     .on('error', gutil.log);
 });
 
 gulp.task('connect', function () {
-  connect.server({
-    root: [__dirname + '/src'],
-    port: 9000,
-    livereload: true
-  });
+
+  server.run(['server/server.js']);
+
 });
 
 gulp.task('watch', function () {
-  gulp.watch(paths.js, ['lint']);
+  gulp.watch(paths.js, ['lint',server.notify]);
   gulp.watch(['./src/index.html', paths.css, paths.js], ['html']);
+  gulp.watch(['./server/**/*'],['lint',server.run]);
 });
 
 gulp.task('default', ['connect', 'watch']);
