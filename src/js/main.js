@@ -1,4 +1,4 @@
-var loadGame = function (user) {
+window.loadGame = function (user) {
 	'use strict';
 
 	var ns = window['space-boats'];
