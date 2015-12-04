@@ -11,9 +11,16 @@ window.loadGame = function (user) {
 	game.state.add('menu', ns.Menu);
 	game.state.add('game', ns.Game);
 	/* yo phaser:state new-state-files-put-here */
-	game.state.start('game',true,true,{
-		user:user
+	ns.socket.emit('account:login', user);
+	ns.socket.on('account:login:ack', function(ack){
+		if(ack){
+			game.state.start('game',true,true,{
+				user:user
+			});
+		}
+
 	});
+
 };
 
 if(typeof window.fbAsyncInit!=='function'){
