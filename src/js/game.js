@@ -4,7 +4,6 @@
 	function Game() {
 		this.worldSize = 640;
 		this.starCount = 300;
-
 		this.cameraPos = new Phaser.Point(0, 0);
 		this.stars = [];
 	}
@@ -15,7 +14,9 @@
 	    this.game.load.spritesheet('ship', '/assets/ship.png', 32, 32);
 		this.game.load.image('starfield', '/assets/starfield.gif');
 	};
-
+	Game.prototype.init = function(params){
+		this.user = params.user;
+	};
 	// Setup the example
 	Game.prototype.create = function() {
 
@@ -24,6 +25,7 @@
 
 		// create player
 		this.player = new ns.obj.SpaceObject(this.game,'ship', this.game.width/2, this.game.height/2, 180, 200, 250);
+		this.player.user = this.user;
 		this.game.world.setBounds((this.worldSize/2*-1) + this.player.spr.x, (this.worldSize/2*-1) + this.player.spr.y, this.worldSize, this.worldSize);
 		// create controls object
 		this.controls = new ns.obj.PlayerControlsObject(this.game, this.player);
