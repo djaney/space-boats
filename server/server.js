@@ -24,6 +24,10 @@ io.on('connection', function(client){
 		client.emit('account:login:ack',true);
 	});
 
+	client.on('physics:update', function(params){
+		console.log(params);
+	});
+
 });
 
 

@@ -41,6 +41,27 @@
 		if (this.spr.x < this.game.world.bounds.x) {this.spr.x = this.game.world.bounds.x + this.game.world.bounds.width;}
 		if (this.spr.y > this.game.world.bounds.y + this.game.world.bounds.height) {this.spr.y = this.game.world.bounds.y;}
 		if (this.spr.y < this.game.world.bounds.y) {this.spr.y = this.game.world.bounds.y + this.game.world.bounds.height;}
+
+		if(this.socketOptions.emitPhysics){
+			ns.socket.emit('physics:update',{
+				x: this.spr.x,
+				y: this.spr.y,
+				body:{
+					angularVelocity: this.spr.body.angularVelocity,
+					acceleration: {
+						x:this.spr.body.acceleration.x,
+						y:this.spr.body.acceleration.y,
+					},
+				},
+				rotation: this.spr.rotation,
+			});
+		}
+
+		if(this.socketOptions.watchPhysics){
+			// TODO
+		}
+
+
 	};
 
 

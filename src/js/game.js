@@ -26,6 +26,7 @@
 		// create player
 		this.player = new ns.obj.SpaceObject(this.game,'ship', this.game.width/2, this.game.height/2, 180, 200, 250);
 		this.player.user = this.user;
+		this.player.socketOptions.emitPhysics = true;
 		this.game.world.setBounds((this.worldSize/2*-1) + this.player.spr.x, (this.worldSize/2*-1) + this.player.spr.y, this.worldSize, this.worldSize);
 		// create controls object
 		this.controls = new ns.obj.PlayerControlsObject(this.game, this.player);
