@@ -11,37 +11,34 @@
 
 <body>
     <script>
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId      : '501757653337794',
-                xfbml      : true,
-                version    : 'v2.5'
-            });
-            FB.getLoginStatus(function(response) {
-                if (response.status === 'connected') {
-                    // Logged into your app and Facebook.
-                    FB.api('/me', function(response) {
-                    window.loadGame(response);
-                });
-                } else if (response.status === 'not_authorized') {
-                    // The person is logged into Facebook, but not your app.
-                    FB.login();
-                } else {
-                    // The person is not logged into Facebook, so we're not sure if
-                    // they are logged into this app or not.
-                    FB.login();
-                }
-            });
 
-        };
-
-        (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+        // window.fbAsyncInit = function() {
+        //     FB.init({
+        //         appId      : '501757653337794',
+        //         xfbml      : true,
+        //         version    : 'v2.5'
+        //     });
+        //     FB.getLoginStatus(function(response) {
+        //         if (response.status === 'connected') {
+        //             FB.api('/me', function(response) {
+        //             window.loadGame(response);
+        //         });
+        //         } else if (response.status === 'not_authorized') {
+        //             FB.login();
+        //         } else {
+        //             FB.login();
+        //         }
+        //     });
+		//
+        // };
+		//
+        // (function(d, s, id){
+        //     var js, fjs = d.getElementsByTagName(s)[0];
+        //     if (d.getElementById(id)) {return;}
+        //     js = d.createElement(s); js.id = id;
+        //     js.src = "//connect.facebook.net/en_US/sdk.js";
+        //     fjs.parentNode.insertBefore(js, fjs);
+        // }(document, 'script', 'facebook-jssdk'));
     </script>
     <div id="space-boats-game" class="game"></div>
 

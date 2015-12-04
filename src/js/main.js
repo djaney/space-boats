@@ -13,3 +13,10 @@ window.loadGame = function (user) {
 		user:user
 	});
 };
+
+if(typeof window.fbAsyncInit!=='function'){
+	 window.loadGame({
+		id:1234567890,
+		name: 'Star Lord'
+	 });
+}
