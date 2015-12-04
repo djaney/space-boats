@@ -19,24 +19,6 @@
 	// Setup the example
 	Game.prototype.create = function() {
 
-		// generate stars
-		// var tinyStar = this.game.add.graphics(0, 0);
-	    // tinyStar.beginFill(0xFFFFFF, 1);
-	    // tinyStar.drawRect(1, 1, 1, 1);
-		//
-		// // this.tinyStar = this.game.add.sprite(0, 0, tinyStar);
-		// this.tinyStar = tinyStar;
-		// this.starTexture = this.game.add.renderTexture(this.worldSize, this.worldSize, 'starTexture');
-		// this.bgStars = this.game.add.sprite(0, 0, this.starTexture);
-		// for (var i = 0; i < this.starCount; i++){
-		// 	var s = 0.1;
-		// 	var t = this.starTexture;
-		// 	var x = Math.floor(Math.random() * this.worldSize);
-		// 	var y = Math.floor(Math.random() * this.worldSize);
-		// 	var loopProgress = i / this.starCount;
-		//
-		// 	this.stars.push( { x: x, y: y, speed: s, texture: t, sprite: this.tinyStar });
-		// }
 
 		this.bgStars = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'starfield');
 
@@ -53,7 +35,6 @@
 		this.game.camera.follow(this.player.spr);
 
 
-
 	};
 
 	// The update() method is called every frame
@@ -63,33 +44,6 @@
 		this.player.update();
 		this.game.world.setBounds((this.worldSize/2*-1) + this.player.spr.x, (this.worldSize/2*-1) + this.player.spr.y, this.worldSize, this.worldSize);
 
-
-		// var playerVelocity = this.player.spr.body.newVelocity;
-		// for (var i = 0; i < this.stars.length; i++){
-		// 	//  Update the stars y position based on its speed
-		//
-		//
-		// 	if (this.stars[i].x > this.worldSize) {
-		// 		this.stars[i].x = 0;
-		// 	}
-		// 	if (this.stars[i].x < 0) {
-		// 		this.stars[i].x = this.worldSize;
-		// 	}
-		//
-		// 	if (this.stars[i].y > this.worldSize) {
-		// 		this.stars[i].y = 0;
-		// 	}
-		// 	if (this.stars[i].y < 0) {
-		// 		this.stars[i].y = this.worldSize;
-		// 	}
-		//
-		// 	this.stars[i].x -= playerVelocity.x * this.stars[i].speed;
-		// 	this.stars[i].y -= playerVelocity.y * this.stars[i].speed;
-		// 	this.stars[i].texture.renderXY(this.stars[i].sprite, this.stars[i].x, this.stars[i].y, i === 0);
-		//
-		// }
-		// this.bgStars.x = (this.worldSize/2*-1) + this.player.spr.x;
-		// this.bgStars.y = (this.worldSize/2*-1) + this.player.spr.y;
 
 		this.bgStars.tilePosition.x = -this.player.spr.x;
 		this.bgStars.tilePosition.y = -this.player.spr.y;
