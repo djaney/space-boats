@@ -1,6 +1,6 @@
 (function() {
 	'use strict';
-	var ns = window['space-boats'];
+	var ns = window['space-boats']
 	function Game() {
 		this.worldSize = 640;
 		this.starCount = 300;
@@ -41,12 +41,19 @@
 		// camera follows player
 		this.game.camera.follow(this.player.spr);
 
+		// physics updates
+		this.physicsUpdateCb = function(updates){
+			// physics updates
+		};
 
-		ns.socket.on('physics:update', function(updates){
+		ns.socket.on('physics:update', this.physicsUpdateCb);
 
-		});
 
 	};
+	Game.prototype.shutdown = function(){
+		ns.socket.removeListener('physics:update', this.physicsUpdateCb);
+	};
+
 
 	// The update() method is called every frame
 	Game.prototype.update = function() {

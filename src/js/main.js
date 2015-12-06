@@ -11,6 +11,8 @@ window.loadGame = function (user) {
 	game.state.add('menu', ns.Menu);
 	game.state.add('game', ns.Game);
 	/* yo phaser:state new-state-files-put-here */
+
+	// handle user login
 	ns.socket.emit('account:login', user);
 	ns.socket.on('account:login:ack', function(ack){
 		if(ack.ack){
@@ -21,6 +23,8 @@ window.loadGame = function (user) {
 		}
 
 	});
+
+
 
 };
 
