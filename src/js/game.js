@@ -69,7 +69,10 @@
 
 		// player add
 		this.playerRemoveCb = function(data){
-
+			if(_this.players.hasOwnProperty(data.clientId)){
+				_this.game.world.remove(_this.players[data.clientId].spr);
+				delete _this.players[data.clientId];
+			}
 		};
 		ns.socket.on('player:remove', this.playerRemoveCb);
 
