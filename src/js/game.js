@@ -25,9 +25,12 @@
 
 		// create player
 		this.player = new ns.obj.SpaceObject(this.game,'ship', this.game.width/2, this.game.height/2, 180, 200, 250);
-		this.player.user = this.user;
 		this.player.socketOptions.emitPhysics = true;
+		this.player.user = this.user;
+
+		// initialize world bounds
 		this.game.world.setBounds((this.worldSize/2*-1) + this.player.spr.x, (this.worldSize/2*-1) + this.player.spr.y, this.worldSize, this.worldSize);
+
 		// create controls object
 		this.controls = new ns.obj.PlayerControlsObject(this.game, this.player);
 
@@ -35,6 +38,7 @@
 		this.player.spr.anchor.setTo(0.5, 0.5);
 	    this.player.spr.angle = -90; // Point the ship up
 
+		// camera follows player
 		this.game.camera.follow(this.player.spr);
 
 
@@ -44,12 +48,17 @@
 	Game.prototype.update = function() {
 		// watch keys
 		this.controls.update();
+
+		// player object step
 		this.player.update();
+
+		// world bounds must follow player
 		this.game.world.setBounds((this.worldSize/2*-1) + this.player.spr.x, (this.worldSize/2*-1) + this.player.spr.y, this.worldSize, this.worldSize);
 
-
+		// moving background
 		this.bgStars.tilePosition.x = -this.player.spr.x;
 		this.bgStars.tilePosition.y = -this.player.spr.y;
+		// background follow camera
 		this.bgStars.x = this.player.spr.x - (this.game.width/2);
 		this.bgStars.y = this.player.spr.y - (this.game.height/2);
 	};
