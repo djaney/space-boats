@@ -11,12 +11,16 @@ io.on('connection', function(client){
 	_players[client.id] = {
 		socket:client
 	};
-	console.log('a user connected');
+	console.log(client.id + ' connected');
 	client.on('disconnect', function(){
-		if(_players[client.id].profile){
-			console.log(_players[client.id].profile.name + ' disconnected');
-		}else{
-			console.log('user disconnected');
+		console.log(client.id + ' disconnected');
+		// add player to all clients
+		for(var i in _players){
+			if (_players[i].socket.id!==client.id){
+				_players[i].socket.emit('player:remove',{
+					clientId:client.id
+				});
+			}
 		}
 		delete _players[client.id];
 
@@ -29,6 +33,15 @@ io.on('connection', function(client){
 			ack:true,
 			clientId:client.id
 		});
+		// add player to all clients
+		for(var i in _players){
+			if (_players[i].socket.id!==client.id){
+				_players[i].socket.emit('player:add',{
+					profile:_players[i].profile,
+					clientId:client.id
+				});
+			}
+		}
 	});
 
 	client.on('physics:update', function(params){

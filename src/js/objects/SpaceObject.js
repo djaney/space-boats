@@ -64,6 +64,16 @@
 
 	};
 
+	SpaceObject.prototype.updatePhysics = function(data){
+		console.log(data);
+		this.spr.x = data.x;
+		this.spr.y = data.y;
+		this.spr.rotation = data.rotation;
+		this.spr.body.angularVelocity = data.body.angularVelocity;
+		this.spr.body.acceleration.x = data.body.acceleration.x;
+		this.spr.body.acceleration.y = data.body.acceleration.y;
+	};
+
 
 	window['space-boats'] = window['space-boats'] || {};
 	window['space-boats'].obj = window['space-boats'].obj || {};

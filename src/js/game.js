@@ -6,6 +6,7 @@
 		this.starCount = 300;
 		this.cameraPos = new Phaser.Point(0, 0);
 		this.stars = [];
+		this.players = {};
 	}
 
 	// Load images and sounds
@@ -20,6 +21,7 @@
 	// Setup the example
 	Game.prototype.create = function() {
 
+		var _this = this;
 
 		this.bgStars = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'starfield');
 
@@ -42,16 +44,40 @@
 		this.game.camera.follow(this.player.spr);
 
 		// physics updates
-		this.physicsUpdateCb = function(updates){
-			// physics updates
+		this.physicsUpdateCb = function(data){
+			for(var i in data){
+				if(data[i].type=='player' && _this.players.hasOwnProperty(data[i].clientId)){
+					var player = _this.players[data[i].clientId];
+					player.updatePhysics(data[i].physics);
+				}
+			}
 		};
-
 		ns.socket.on('physics:update', this.physicsUpdateCb);
 
+		// player add
+		this.playerAddCb = function(data){
+			// create player
+			var player = new ns.obj.SpaceObject(_this.game,'ship', _this.game.width/2, _this.game.height/2, 180, 200, 250);
+			// some sprite settings
+			player.spr.anchor.setTo(0.5, 0.5);
+			player.spr.angle = -90; // Point the ship up
+			player.user = data.profile;
+			player.socketOptions.emitPhysics = true;
+			_this.players[data.clientId] = player;
+		};
+		ns.socket.on('player:add', this.playerAddCb);
+
+		// player add
+		this.playerRemoveCb = function(data){
+
+		};
+		ns.socket.on('player:remove', this.playerRemoveCb);
 
 	};
 	Game.prototype.shutdown = function(){
 		ns.socket.removeListener('physics:update', this.physicsUpdateCb);
+		ns.socket.removeListener('player:add', this.playerAddCb);
+		ns.socket.removeListener('player:remove', this.playerRemoveCb);
 	};
 
 
