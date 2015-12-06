@@ -13,9 +13,10 @@ window.loadGame = function (user) {
 	/* yo phaser:state new-state-files-put-here */
 	ns.socket.emit('account:login', user);
 	ns.socket.on('account:login:ack', function(ack){
-		if(ack){
+		if(ack.ack){
 			game.state.start('game',true,true,{
-				user:user
+				user:user,
+				clientId:ack.clientId
 			});
 		}
 

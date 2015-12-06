@@ -42,6 +42,10 @@
 		this.game.camera.follow(this.player.spr);
 
 
+		ns.socket.on('physics:update', function(updates){
+
+		});
+
 	};
 
 	// The update() method is called every frame
