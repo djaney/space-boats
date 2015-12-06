@@ -52,6 +52,10 @@
 						x:this.spr.body.acceleration.x,
 						y:this.spr.body.acceleration.y,
 					},
+					velocity: {
+						x:this.spr.body.velocity.x,
+						y:this.spr.body.velocity.y,
+					},
 				},
 				rotation: this.spr.rotation,
 			});
@@ -65,13 +69,14 @@
 	};
 
 	SpaceObject.prototype.updatePhysics = function(data){
-		console.log(data);
 		this.spr.x = data.x;
 		this.spr.y = data.y;
 		this.spr.rotation = data.rotation;
 		this.spr.body.angularVelocity = data.body.angularVelocity;
 		this.spr.body.acceleration.x = data.body.acceleration.x;
 		this.spr.body.acceleration.y = data.body.acceleration.y;
+		this.spr.body.velocity.x = data.body.velocity.x;
+		this.spr.body.velocity.y = data.body.velocity.y;
 	};
 
 
