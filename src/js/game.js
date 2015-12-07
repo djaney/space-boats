@@ -74,6 +74,7 @@
 				player.spr.angle = -90; // Point the ship up
 				player.user = data.profile;
 				player.socketOptions.emitPhysics = true;
+				player.socketOptions.watchPhysics = true;
 				_this.players[data.clientId] = player;
 			}
 

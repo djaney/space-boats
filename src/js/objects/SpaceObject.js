@@ -61,22 +61,26 @@
 			});
 		}
 
-		if(this.socketOptions.watchPhysics){
-			// TODO
-		}
 
 
 	};
 
 	SpaceObject.prototype.updatePhysics = function(data){
-		this.spr.x = data.x;
-		this.spr.y = data.y;
-		this.spr.rotation = data.rotation;
-		this.spr.body.angularVelocity = data.body.angularVelocity;
-		this.spr.body.acceleration.x = data.body.acceleration.x;
-		this.spr.body.acceleration.y = data.body.acceleration.y;
-		this.spr.body.velocity.x = data.body.velocity.x;
-		this.spr.body.velocity.y = data.body.velocity.y;
+		if(this.socketOptions.watchPhysics){
+			this.spr.x = data.x;
+			this.spr.y = data.y;
+			this.spr.rotation = data.rotation;
+			this.spr.body.angularVelocity = data.body.angularVelocity;
+			this.spr.body.acceleration.x = data.body.acceleration.x;
+			this.spr.body.acceleration.y = data.body.acceleration.y;
+			this.spr.body.velocity.x = data.body.velocity.x;
+			this.spr.body.velocity.y = data.body.velocity.y;
+			if(this.spr.body.acceleration.x!=0 && this.spr.body.acceleration.y!=0){
+				this.spr.frame = 1;
+			}else{
+				this.spr.frame = 0;
+			}
+		}
 	};
 
 
