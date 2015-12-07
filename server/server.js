@@ -57,7 +57,13 @@ io.on('connection', function(client){
 // server fast loop
 setInterval(function(){
 		for(var i in _players){
-			_players[i].socket.emit('physics:update',_physicsUpdates);
+			var phy = [];
+			for(var j in _physicsUpdates){
+				if(_physicsUpdates[j].clientId!==_players[i].socket.id){
+					phy.push(_physicsUpdates[j]);
+				}
+			}
+			_players[i].socket.emit('physics:update',phy);
 		}
 
 	_physicsUpdates = [];
