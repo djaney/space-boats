@@ -76,7 +76,9 @@ setInterval(function(){
 					phy.push(_physicsUpdates[j]);
 				}
 			}
-			_players[i].socket.emit('physics:update',phy);
+			if(phy.length>0){
+				_players[i].socket.emit('physics:update',phy);
+			}
 		}
 
 	_physicsUpdates = [];

@@ -34,7 +34,11 @@
 	}
 	SpaceObject.prototype = new ns.obj.GameObject();
 	SpaceObject.prototype.constructor = SpaceObject;
-
+	SpaceObject.prototype.paused = function(){
+		alert('ha');
+		this.spr.body.acceleration.setTo(0, 0);
+		this.update();
+	};
 	SpaceObject.prototype.update = function(){
 		// warp space objects if out of bounds
 		if (this.spr.x > this.game.world.bounds.x + this.game.world.bounds.width) {this.spr.x = this.game.world.bounds.x;}

@@ -23,7 +23,8 @@
 	Game.prototype.create = function() {
 
 		var _this = this;
-
+		
+		_this.game.stage.disableVisibilityChange = true;
 		this.bgStars = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'starfield');
 
 		// create player
