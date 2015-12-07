@@ -18,7 +18,8 @@ window.loadGame = function (user) {
 		if(ack.ack){
 			game.state.start('game',true,true,{
 				user:user,
-				clientId:ack.clientId
+				clientId:ack.clientId,
+				otherPlayers:ack.otherPlayers
 			});
 		}
 

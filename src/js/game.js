@@ -17,6 +17,7 @@
 	};
 	Game.prototype.init = function(params){
 		this.user = params.user;
+		this.otherPlayers = params.otherPlayers;
 	};
 	// Setup the example
 	Game.prototype.create = function() {
@@ -55,15 +56,28 @@
 		ns.socket.on('physics:update', this.physicsUpdateCb);
 
 		// player add
-		this.playerAddCb = function(data){
-			// create player
-			var player = new ns.obj.SpaceObject(_this.game,'ship', _this.game.width/2, _this.game.height/2, 180, 200, 250);
-			// some sprite settings
-			player.spr.anchor.setTo(0.5, 0.5);
-			player.spr.angle = -90; // Point the ship up
-			player.user = data.profile;
-			player.socketOptions.emitPhysics = true;
-			_this.players[data.clientId] = player;
+		this.playerAddCb = function(d){
+			if(!d) return;
+			var dataArr = [];
+
+			if(Array.isArray(d)){
+				dataArr = d;
+			}else{
+				dataArr = [d];
+			}
+			for(var i in dataArr){
+				var data = dataArr[i];
+				// create player
+				var player = new ns.obj.SpaceObject(_this.game,'ship', _this.game.width/2, _this.game.height/2, 180, 200, 250);
+				// some sprite settings
+				player.spr.anchor.setTo(0.5, 0.5);
+				player.spr.angle = -90; // Point the ship up
+				player.user = data.profile;
+				player.socketOptions.emitPhysics = true;
+				_this.players[data.clientId] = player;
+			}
+
+
 		};
 		ns.socket.on('player:add', this.playerAddCb);
 
@@ -75,6 +89,10 @@
 			}
 		};
 		ns.socket.on('player:remove', this.playerRemoveCb);
+
+		// add other players
+		this.playerAddCb(this.otherPlayers);
+		delete this.otherPlayers;
 
 	};
 	Game.prototype.shutdown = function(){

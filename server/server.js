@@ -29,19 +29,32 @@ io.on('connection', function(client){
 	client.on('account:login', function(u){
 		_players[client.id].profile = u;
 		console.log(_players[client.id].profile.name + ' logged in');
-		client.emit('account:login:ack',{
-			ack:true,
-			clientId:client.id
-		});
+
 		// add player to all clients
+		var otherPlayers = []
 		for(var i in _players){
 			if (_players[i].socket.id!==client.id){
+				// notify other players
 				_players[i].socket.emit('player:add',{
-					profile:_players[i].profile,
+					profile:_players[client.id].profile,
 					clientId:client.id
+				});
+				otherPlayers.push({
+					profile:_players[i].profile,
+					clientId:i
 				});
 			}
 		}
+		// login new player
+		client.emit('account:login:ack',{
+			ack:true,
+			clientId:client.id,
+			otherPlayers:otherPlayers
+		});
+		// notify new client of other players
+		// client.emit('player:add',otherPlayers);
+		delete otherPlayers;
+
 	});
 
 	client.on('physics:update', function(params){
