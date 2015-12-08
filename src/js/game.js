@@ -23,13 +23,14 @@
 	Game.prototype.create = function() {
 
 		var _this = this;
-		
+
 		_this.game.stage.disableVisibilityChange = true;
 		this.bgStars = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'starfield');
 
 		// create player
 		this.player = new ns.obj.SpaceObject(this.game,'ship', this.game.width/2, this.game.height/2, 180, 200, 250);
 		this.player.socketOptions.emitPhysics = true;
+		// this.player.socketOptions.watchPhysics = true;
 		this.player.user = this.user;
 
 		// initialize world bounds

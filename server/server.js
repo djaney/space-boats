@@ -5,7 +5,6 @@ var io = require('socket.io')(http);
 var port = 9000;
 app.use(express.static(__dirname + '/../src'));
 
-var _physicsUpdates = [];
 var _players = {};
 io.on('connection', function(client){
 	_players[client.id] = {
@@ -58,30 +57,39 @@ io.on('connection', function(client){
 	});
 
 	client.on('physics:update', function(params){
-		_physicsUpdates.push({
-			type:'player',
-			clientId:client.id,
-			physics:params
-		});
+		_players[client.id].physics = params;
+		_players[client.id].lastPhysicsUpdate = process.uptime();
 	});
 
 });
+
+setInterval(function(){
+	for(var i in _players){
+		if(process.uptime() - _players[i].lastPhysicsUpdate > 1){
+			_players[i].socket.disconnect();
+		}
+	}
+},45);
 
 // server fast loop
 setInterval(function(){
 		for(var i in _players){
 			var phy = [];
-			for(var j in _physicsUpdates){
-				if(_physicsUpdates[j].clientId!==_players[i].socket.id){
-					phy.push(_physicsUpdates[j]);
+			for(var j in _players){
+				if(_players[j].physics){
+					phy.push({
+						type:'player',
+						clientId:_players[j].socket.id,
+						physics:_players[j].physics
+					});
 				}
 			}
 			if(phy.length>0){
 				_players[i].socket.emit('physics:update',phy);
 			}
+			delete phy;
 		}
 
-	_physicsUpdates = [];
 
 },15);
 
