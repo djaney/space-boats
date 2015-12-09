@@ -29,7 +29,7 @@
 
 		// create player
 		this.player = new ns.obj.SpaceObject(this.game,'ship', this.game.width/2, this.game.height/2, 180, 200, 250);
-		this.player.hyperspaceExit();
+
 		this.player.socketOptions.emitPhysics = true;
 		// this.player.socketOptions.watchPhysics = true;
 		this.player.user = this.user;
@@ -72,6 +72,7 @@
 				var data = dataArr[i];
 				// create player
 				var player = new ns.obj.SpaceObject(_this.game,'ship', _this.game.width/2, _this.game.height/2, 180, 200, 250);
+				player.hyperspaceExit();
 
 				// some sprite settings
 				player.user = data.profile;
