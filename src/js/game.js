@@ -72,9 +72,8 @@
 				var data = dataArr[i];
 				// create player
 				var player = new ns.obj.SpaceObject(_this.game,'ship', _this.game.width/2, _this.game.height/2, 180, 200, 250);
-				player.hyperspaceExit();
-				// some sprite settings
 
+				// some sprite settings
 				player.user = data.profile;
 				player.socketOptions.emitPhysics = false;
 				player.socketOptions.watchPhysics = true;
