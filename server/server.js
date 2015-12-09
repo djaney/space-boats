@@ -71,7 +71,7 @@ io.on('connection', function(client){
 
 setInterval(function(){
 	for(var i in _players){
-		if(process.uptime() - _players[i].lastPhysicsUpdate > 1){
+		if(process.uptime() - _players[i].lastPhysicsUpdate > 5){
 			_players[i].socket.disconnect();
 		}
 	}
