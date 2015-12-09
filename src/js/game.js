@@ -1,6 +1,6 @@
 (function() {
 	'use strict';
-	var ns = window['space-boats']
+	var ns = window['space-boats'];
 	function Game() {
 		this.worldSize = 640;
 		this.starCount = 300;
@@ -49,7 +49,7 @@
 		// physics updates
 		this.physicsUpdateCb = function(data){
 			for(var i in data){
-				if(data[i].type=='player' && _this.players.hasOwnProperty(data[i].clientId)){
+				if(data[i].type==='player' && _this.players.hasOwnProperty(data[i].clientId)){
 					var player = _this.players[data[i].clientId];
 					player.updatePhysics(data[i].physics);
 				}
@@ -59,7 +59,7 @@
 
 		// player add
 		this.playerAddCb = function(d){
-			if(!d) return;
+			if(!d) {return;}
 			var dataArr = [];
 
 			if(Array.isArray(d)){

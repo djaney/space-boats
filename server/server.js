@@ -3,7 +3,13 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 9000;
-app.use(express.static(__dirname + '/../src'));
+
+if(process.env.NODE_ENV==='production'){
+		app.use(express.static(__dirname + '/../dist'));
+}else{
+		app.use(express.static(__dirname + '/../src'));
+}
+
 
 var _players = {};
 io.on('connection', function(client){
