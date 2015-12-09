@@ -29,6 +29,7 @@
 
 		// create player
 		this.player = new ns.obj.SpaceObject(this.game,'ship', this.game.width/2, this.game.height/2, 180, 200, 250);
+		this.player.hyperspaceExit();
 		this.player.socketOptions.emitPhysics = true;
 		// this.player.socketOptions.watchPhysics = true;
 		this.player.user = this.user;
@@ -71,11 +72,11 @@
 				var data = dataArr[i];
 				// create player
 				var player = new ns.obj.SpaceObject(_this.game,'ship', _this.game.width/2, _this.game.height/2, 180, 200, 250);
+				player.hyperspaceExit();
 				// some sprite settings
-				player.spr.anchor.setTo(0.5, 0.5);
-				player.spr.angle = -90; // Point the ship up
+
 				player.user = data.profile;
-				player.socketOptions.emitPhysics = true;
+				player.socketOptions.emitPhysics = false;
 				player.socketOptions.watchPhysics = true;
 				_this.players[data.clientId] = player;
 			}
@@ -87,8 +88,11 @@
 		// player add
 		this.playerRemoveCb = function(data){
 			if(_this.players.hasOwnProperty(data.clientId)){
-				_this.game.world.remove(_this.players[data.clientId].spr);
-				delete _this.players[data.clientId];
+				_this.players[data.clientId].hyperspaceEnter(function(){
+					_this.game.world.remove(_this.players[data.clientId].spr);
+					delete _this.players[data.clientId];
+				});
+
 			}
 		};
 		ns.socket.on('player:remove', this.playerRemoveCb);
@@ -112,6 +116,10 @@
 
 		// player object step
 		this.player.update();
+
+		for(var i in this.players){
+			this.players[i].update();
+		}
 
 		// world bounds must follow player
 		this.game.world.setBounds((this.worldSize/2*-1) + this.player.spr.x, (this.worldSize/2*-1) + this.player.spr.y, this.worldSize, this.worldSize);

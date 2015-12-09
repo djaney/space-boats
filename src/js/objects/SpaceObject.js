@@ -21,10 +21,16 @@
 		this.rotationSpeed = rotationSpeed;
 		this.acceleration = acceleration;
 		this.maxSpeed = maxSpeed;
+		this.hyperspaceStep = null;
+		this.hyperspaceMaxStep = 10;
+		this.hyperspaceMaxScale = 20;
+		this.hyperspaceDirection = 0;
+		this.hyperspaceCb = null;
 		this.socketOptions = {emitPhysics:false, watchPhysics: false};
 		// Add the ship to the stage
 	    this.spr = this.game.add.sprite(this.x, this.y, this.sprName);
-
+		this.spr.anchor.setTo(0.5, 0.5);
+		this.spr.angle = -90; // Point the ship up
 
 		// Enable physics on the ship
 	    this.game.physics.enable(this.spr, Phaser.Physics.ARCADE);
@@ -39,6 +45,24 @@
 		this.spr.body.acceleration.setTo(0, 0);
 		this.update();
 	};
+	SpaceObject.prototype.hyperspaceEnter = function(cb){
+		if(this.hyperspaceStep===null){
+			this.hyperspaceStep = 1;
+			this.hyperspaceDirection = 1;
+			this.spr.anchor.setTo(0, 0.5);
+			this.hyperspaceCb = cb || null;
+		}
+	};
+
+	SpaceObject.prototype.hyperspaceExit = function(cb){
+		if(this.hyperspaceStep===null){
+			this.hyperspaceStep = this.hyperspaceMaxStep;
+			this.hyperspaceDirection = -1;
+			this.spr.anchor.setTo(1, 0.5);
+			this.hyperspaceCb = cb || null;
+		}
+	};
+
 	SpaceObject.prototype.update = function(){
 		// warp space objects if out of bounds
 		if (this.spr.x > this.game.world.bounds.x + this.game.world.bounds.width) {this.spr.x = this.game.world.bounds.x;}
@@ -63,6 +87,26 @@
 				},
 				rotation: this.spr.rotation,
 			});
+		}
+
+		// hyperspace
+		if(this.hyperspaceStep!==null && this.hyperspaceDirection>0 && this.hyperspaceStep < this.hyperspaceMaxStep){
+			// Enter
+			this.hyperspaceStep++;
+			this.spr.scale.x = this.hyperspaceStep * (this.hyperspaceMaxScale/this.hyperspaceMaxStep);
+		}else if(this.hyperspaceStep!==null && this.hyperspaceDirection<0 && this.hyperspaceStep > 1){
+			// Leave
+			this.hyperspaceStep--;
+			this.spr.scale.x = this.hyperspaceStep * (this.hyperspaceMaxScale/this.hyperspaceMaxStep);
+		}else if(this.hyperspaceStep!==null){
+			// End
+			this.hyperspaceStep = null;
+			this.spr.scale.x = 1;
+			this.spr.anchor.setTo(0.5, 0.5);
+			if(typeof this.hyperspaceCb==='function'){
+				this.hyperspaceCb();
+				this.hyperspaceCb = null;
+			}
 		}
 
 
