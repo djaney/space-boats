@@ -23,7 +23,12 @@
 	Game.prototype.create = function() {
 
 		var _this = this;
-
+		this.hudSettings = {
+			radar:{
+				diameter:this.game.width * 0.15,
+				margin:10
+			}
+		};
 		_this.game.stage.disableVisibilityChange = true;
 		this.bgStars = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'starfield');
 
@@ -46,6 +51,11 @@
 
 		// camera follows player
 		this.game.camera.follow(this.player.spr);
+
+		// create HUD
+		this.hud = this.game.add.graphics(0,0);
+		this.hud.fixedToCamera = true;
+
 
 		// physics updates
 		this.physicsUpdateCb = function(data){
@@ -130,12 +140,70 @@
 		// background follow camera
 		this.bgStars.x = this.player.spr.x - (this.game.width/2);
 		this.bgStars.y = this.player.spr.y - (this.game.height/2);
+
+
 	};
 
 	Game.prototype.render = function(){
 		this.game.debug.text('x: '+(this.player.spr.x || '--'), 2, 16, '#00ff00');
 		this.game.debug.text('y: '+(this.player.spr.y || '--'), 2, 16 * 2, '#00ff00');
 		this.game.debug.text('fps: '+(this.game.time.fps || '--'), 2, 16 * 3, '#00ff00');
+
+		// draw radar
+		this.hud.clear();
+		// radar body
+		this.hud.beginFill(0x0BFF0B, 0.5);
+		this.hud.drawCircle(
+			this.game.width - (this.hudSettings.radar.diameter/2) - this.hudSettings.radar.margin,
+			this.hudSettings.radar.diameter/2 + this.hudSettings.radar.margin,
+			this.hudSettings.radar.diameter
+		);
+		this.hud.endFill();
+
+		// radar center
+		this.hud.beginFill(0x0BFF0B, 0.5);
+		this.hud.lineStyle(1,0x0BFF0B, 0.5);
+		this.hud.moveTo(
+			this.game.width - (this.hudSettings.radar.diameter/2) - this.hudSettings.radar.margin,
+			this.hudSettings.radar.margin
+		);
+		this.hud.lineTo(
+			this.game.width - (this.hudSettings.radar.diameter/2) - this.hudSettings.radar.margin,
+			this.hudSettings.radar.margin + this.hudSettings.radar.diameter
+		);
+		this.hud.endFill();
+
+		this.hud.beginFill(0x0BFF0B, 0.5);
+		this.hud.lineStyle(1,0x0BFF0B, 0.5);
+		this.hud.moveTo(
+			this.game.width - this.hudSettings.radar.diameter - this.hudSettings.radar.margin,
+			this.hudSettings.radar.diameter/2 + this.hudSettings.radar.margin
+		);
+		this.hud.lineTo(
+			this.game.width - this.hudSettings.radar.margin,
+			this.hudSettings.radar.diameter/2 + this.hudSettings.radar.margin
+		);
+		this.hud.endFill();
+
+		// render other players in the radar
+		for(var i in this.players){
+			var p = this.players[i];
+			var xDiff = (p.spr.x - this.player.spr.x) * 0.01;
+			var yDiff = (p.spr.y - this.player.spr.y) * 0.01;
+			var distance = this.game.math.distance(0,0,xDiff,yDiff);
+			if(distance < this.hudSettings.radar.diameter/2){
+				this.hud.beginFill(0x0B0BFF, 0.5);
+				this.hud.lineStyle(0);
+				this.hud.drawCircle(
+					this.game.width - (this.hudSettings.radar.diameter/2) - this.hudSettings.radar.margin + xDiff,
+					this.hudSettings.radar.diameter/2 + this.hudSettings.radar.margin + yDiff,
+					3
+				);
+				this.hud.endFill();
+			}
+
+		}
+
 	};
 
 
