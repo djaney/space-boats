@@ -2,7 +2,7 @@ window.loadGame = function (user) {
 	'use strict';
 
 	var ns = window['space-boats'];
-	var game = new Phaser.Game(640, 480, Phaser.AUTO, 'space-boats-game');
+	var game = new Phaser.Game(800, 600, Phaser.AUTO, 'space-boats-game');
 	ns.socket = io();
 
 	game.state.add('boot', ns.Boot);

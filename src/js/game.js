@@ -2,7 +2,7 @@
 	'use strict';
 	var ns = window['space-boats'];
 	function Game() {
-		this.worldSize = 640;
+		this.worldSize = 800;
 		this.starCount = 300;
 		this.cameraPos = new Phaser.Point(0, 0);
 		this.stars = [];
