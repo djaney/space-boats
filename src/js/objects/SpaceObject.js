@@ -64,12 +64,6 @@
 	};
 
 	SpaceObject.prototype.update = function(){
-		// warp space objects if out of bounds
-		// if (this.spr.x > this.game.world.bounds.x + this.game.world.bounds.width) {this.spr.x = this.game.world.bounds.x;}
-		// if (this.spr.x < this.game.world.bounds.x) {this.spr.x = this.game.world.bounds.x + this.game.world.bounds.width;}
-		// if (this.spr.y > this.game.world.bounds.y + this.game.world.bounds.height) {this.spr.y = this.game.world.bounds.y;}
-		// if (this.spr.y < this.game.world.bounds.y) {this.spr.y = this.game.world.bounds.y + this.game.world.bounds.height;}
-
 		if(this.socketOptions.emitPhysics){
 			ns.socket.emit('physics:update',{
 				x: this.spr.x,
@@ -115,9 +109,12 @@
 
 	SpaceObject.prototype.updatePhysics = function(data){
 		if(this.socketOptions.watchPhysics){
-			this.spr.x = data.x;
-			this.spr.y = data.y;
-			this.spr.rotation = data.rotation;
+
+			var Point = Phaser.Point;
+			var finalPoint = Point.interpolate(new Point(this.spr.x,this.spr.y),new Point(data.x,data.y),0.5);
+			this.spr.x = finalPoint.x
+			this.spr.y = finalPoint.y;
+			this.spr.rotation = (this.spr.rotation+data.rotation)*0.5;
 			this.spr.body.angularVelocity = data.body.angularVelocity;
 			this.spr.body.acceleration.x = data.body.acceleration.x;
 			this.spr.body.acceleration.y = data.body.acceleration.y;
