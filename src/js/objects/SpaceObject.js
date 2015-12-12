@@ -112,12 +112,13 @@
 			if(this.hasOwnProperty('physicsTimestamp') && data.timestamp < this.physicsTimestamp){
 				return;
 			}
+			var interpolationPercent = 0.2;
 			var Point = Phaser.Point;
-			var finalPoint = Point.interpolate(new Point(this.spr.x,this.spr.y),new Point(data.x,data.y),0.5);
+			var finalPoint = Point.interpolate(new Point(this.spr.x,this.spr.y),new Point(data.x,data.y),interpolationPercent);
 			this.spr.x = finalPoint.x;
 			this.spr.y = finalPoint.y;
 			this.physicsTimestamp = data.timestamp;
-			this.spr.rotation = (this.spr.rotation+data.rotation)*0.5;
+			this.spr.rotation = (this.spr.rotation+data.rotation)*interpolationPercent;
 			// this.spr.body.angularVelocity = data.body.angularVelocity;
 			this.spr.body.acceleration.x = data.body.acceleration.x;
 			this.spr.body.acceleration.y = data.body.acceleration.y;
