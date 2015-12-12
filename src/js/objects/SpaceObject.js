@@ -116,10 +116,11 @@
 			if(!lateSync){
 				this.spr.x = finalPoint.x;
 				this.spr.y = finalPoint.y;
+				this.spr.rotation = data.rotation;
 			}
 
 			this.physicsTimestamp = data.timestamp;
-			this.spr.rotation = (this.spr.rotation+data.rotation)*interpolationPercent;
+
 			// this.spr.body.angularVelocity = data.body.angularVelocity;
 			this.spr.body.acceleration.x = data.body.acceleration.x;
 			this.spr.body.acceleration.y = data.body.acceleration.y;
