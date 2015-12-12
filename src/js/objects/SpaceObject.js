@@ -112,7 +112,7 @@
 
 			var Point = Phaser.Point;
 			var finalPoint = Point.interpolate(new Point(this.spr.x,this.spr.y),new Point(data.x,data.y),0.5);
-			this.spr.x = finalPoint.x
+			this.spr.x = finalPoint.x;
 			this.spr.y = finalPoint.y;
 			this.spr.rotation = (this.spr.rotation+data.rotation)*0.5;
 			this.spr.body.angularVelocity = data.body.angularVelocity;
