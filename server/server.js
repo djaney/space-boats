@@ -63,6 +63,7 @@ io.on('connection', function(client){
 	});
 
 	client.on('physics:update', function(params){
+		params.timestamp = process.uptime();
 		_players[client.id].physics = params;
 		_players[client.id].lastPhysicsUpdate = process.uptime();
 	});

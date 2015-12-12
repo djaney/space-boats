@@ -109,11 +109,14 @@
 
 	SpaceObject.prototype.updatePhysics = function(data){
 		if(this.socketOptions.watchPhysics){
-
+			if(this.hasOwnProperty('physicsTimestamp') && data.timestamp < this.physicsTimestamp){
+				return;
+			}
 			var Point = Phaser.Point;
 			var finalPoint = Point.interpolate(new Point(this.spr.x,this.spr.y),new Point(data.x,data.y),0.5);
 			this.spr.x = finalPoint.x;
 			this.spr.y = finalPoint.y;
+			this.physicsTimestamp = data.timestamp;
 			this.spr.rotation = (this.spr.rotation+data.rotation)*0.5;
 			this.spr.body.angularVelocity = data.body.angularVelocity;
 			this.spr.body.acceleration.x = data.body.acceleration.x;
