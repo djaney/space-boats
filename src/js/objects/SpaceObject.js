@@ -118,7 +118,7 @@
 			this.spr.y = finalPoint.y;
 			this.physicsTimestamp = data.timestamp;
 			this.spr.rotation = (this.spr.rotation+data.rotation)*0.5;
-			this.spr.body.angularVelocity = data.body.angularVelocity;
+			// this.spr.body.angularVelocity = data.body.angularVelocity;
 			this.spr.body.acceleration.x = data.body.acceleration.x;
 			this.spr.body.acceleration.y = data.body.acceleration.y;
 			this.spr.body.velocity.x = data.body.velocity.x;
