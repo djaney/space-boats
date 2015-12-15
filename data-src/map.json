@@ -1,0 +1,63 @@
+{ "height":100,
+ "layers":[
+        {
+         "height":100,
+         "name":"Systems",
+         "objects":[
+                {
+                 "height":0,
+                 "name":"Sol",
+                 "properties":
+                    {
+
+                    },
+                 "type":"planet_system",
+                 "visible":true,
+                 "width":0,
+                 "x":455,
+                 "y":1061
+                },
+                {
+                 "height":0,
+                 "name":"Acamar",
+                 "properties":
+                    {
+
+                    },
+                 "type":"planet_system",
+                 "visible":true,
+                 "width":0,
+                 "x":733,
+                 "y":1069
+                },
+                {
+                 "height":0,
+                 "name":"Achernar",
+                 "properties":
+                    {
+
+                    },
+                 "type":"planet_system",
+                 "visible":true,
+                 "width":0,
+                 "x":622,
+                 "y":941
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":100,
+         "x":0,
+         "y":0
+        }],
+ "orientation":"orthogonal",
+ "properties":
+    {
+
+    },
+ "tileheight":32,
+ "tilesets":[],
+ "tilewidth":32,
+ "version":1,
+ "width":100
+}

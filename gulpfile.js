@@ -93,7 +93,33 @@ gulp.task('watch', function () {
   gulp.watch(paths.js, ['lint',server.notify]);
   gulp.watch(['./src/index.html', paths.css, paths.js], ['html']);
   gulp.watch(['./server/**/*'],['lint',server.run]);
+  gulp.watch(['./data-src/map.json'],['processmap']);
 });
 
-gulp.task('default', ['connect', 'watch']);
-gulp.task('build', ['clean', 'copy-assets', 'copy-vendor', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);
+gulp.task('processmap',function(){
+    var fs = require('fs');
+    var mapJson = require('./data-src/map.json');
+
+    var systemsLayer = mapJson.layers[0].objects;
+    var map = [];
+    for(var i in systemsLayer){
+        var sys = systemsLayer[i];
+        map.push({
+            name:sys.name,
+            x:sys.width/2+sys.x,
+            y:sys.width/2+sys.y,
+            properties:sys.properties
+        });
+    }
+
+    fs.writeFile('./src/data/map.json', JSON.stringify(map), function(err) {
+        if(err) {
+          console.log(err);
+      }else{
+          console.log('built map data');
+      }
+    });
+});
+
+gulp.task('default', ['processmap', 'connect', 'watch']);
+gulp.task('build', ['clean','processmap', 'copy-assets', 'copy-vendor', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);

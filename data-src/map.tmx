@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <objectgroup name="Systems" width="100" height="100">
+  <object name="Sol" type="planet_system" x="455" y="1061"/>
+  <object name="Acamar" type="planet_system" x="733" y="1069"/>
+  <object name="Achernar" type="planet_system" x="622" y="941"/>
+ </objectgroup>
+</map>
