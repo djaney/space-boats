@@ -7,3 +7,7 @@ install dependencies and run bower
 start and watch
 
 		npm start
+
+Test server
+
+		space-boats.heroku.com
