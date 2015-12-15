@@ -10,4 +10,4 @@ start and watch
 
 Test server
 
-		space-boats.heroku.com
+		[http://space-boats.heroku.com](http://space-boats.heroku.com)
