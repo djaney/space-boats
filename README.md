@@ -8,6 +8,4 @@ start and watch
 
 		npm start
 
-Test server
-
-		[http://space-boats.heroku.com](http://space-boats.heroku.com)
+Test server at [http://space-boats.heroku.com](http://space-boats.heroku.com)
