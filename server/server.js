@@ -13,7 +13,7 @@ if(process.env.NODE_ENV==='production'){
 app.use(express.static(cwd));
 
 var _players = {};
-var _systems = require(cwd+ '/data/map.json');
+var _systems = require(cwd+ '/assets/map.json');
 
 io.on('connection', function(client){
 	_players[client.id] = {

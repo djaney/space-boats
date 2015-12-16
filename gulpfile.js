@@ -112,7 +112,7 @@ gulp.task('processmap',function(){
                     properties:sys.properties
                 };
             }
-            fs.writeFile(__dirname + '/src/data/map.json', JSON.stringify(map), function(err) {
+            fs.writeFile(__dirname + '/src/assets/map.json', JSON.stringify(map), function(err) {
                 if(err) {
                   console.log(err);
               }else{
