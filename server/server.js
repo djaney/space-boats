@@ -39,7 +39,7 @@ io.on('connection', function(client){
 		// add player to all clients
 		var otherPlayers = []
 		for(var i in _players){
-			if (_players[i].socket.id!==client.id){
+			if (_players[i].socket.id!==client.id && _players[i].system==_players[client.id].system){
 				// notify other players
 
 
@@ -90,7 +90,7 @@ setInterval(function(){
 		for(var i in _players){
 			var phy = [];
 			for(var j in _players){
-				if(_players[j].physics){
+				if(_players[j].physics && _players[j].system===_players[i].system){
 					phy.push({
 						type:'player',
 						clientId:_players[j].socket.id,
