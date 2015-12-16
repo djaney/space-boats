@@ -5,7 +5,7 @@ var io = require('socket.io')(http);
 var util = require(__dirname + '/utils.js');
 var port = process.env.PORT || 9000;
 
-if(process.env.NODE_ENV==='production'){
+if(process.env.NODE_ENV==='production' || true){
 	var cwd = __dirname + '/../dist';
 }else{
 	var cwd = __dirname + '/../src';

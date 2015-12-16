@@ -128,4 +128,4 @@ gulp.task('processmap',function(){
 });
 
 gulp.task('default', ['processmap', 'connect', 'watch']);
-gulp.task('build', ['clean','processmap', 'copy-assets', 'copy-vendor', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);
+gulp.task('build', ['clean', 'copy-assets', 'copy-vendor', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);
