@@ -103,15 +103,14 @@ gulp.task('processmap',function(){
     fs.readFile(__dirname + '/data-src/map.tmx', function(err, data) {
         parser.parseString(data, function (err, result) {
             var systemsLayer = result.map.objectgroup[0].object;
-            var map = [];
+            var map = {};
             for(var i in systemsLayer){
                 var sys = systemsLayer[i].$;
-                map.push({
-                    name:sys.name,
+                map[sys.name] = {
                     x:(sys.width || 0)/2+Number(sys.x),
                     y:(sys.width || 0)/2+Number(sys.y),
                     properties:sys.properties
-                });
+                };
             }
             fs.writeFile(__dirname + '/src/data/map.json', JSON.stringify(map), function(err) {
                 if(err) {
