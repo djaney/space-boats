@@ -13,7 +13,7 @@
 	 * @param {number} acceleration   acceleration in pixels/second^2
 	 * @param {number} maxSpeed      speed in pixels/second
 	 */
-	function SpaceObject(game,sprName, x, y, rotationSpeed, acceleration, maxSpeed) {
+	function SpaceObject(game,sprName, x, y, rotation, rotationSpeed, acceleration, maxSpeed) {
 		this.game = game;
 		this.sprName = sprName;
 		this.x = x;
@@ -31,6 +31,7 @@
 	    this.spr = this.game.add.sprite(this.x, this.y, this.sprName);
 		this.spr.anchor.setTo(0.5, 0.5);
 		this.spr.angle = -90; // Point the ship up
+		this.spr.rotation = rotation; // Point the ship up
 
 		// Enable physics on the ship
 	    this.game.physics.enable(this.spr, Phaser.Physics.ARCADE);

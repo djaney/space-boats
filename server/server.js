@@ -34,8 +34,17 @@ io.on('connection', function(client){
 
 	client.on('account:login', function(u){
 		_players[client.id].profile = u;
+		// set random system
 		var playerSystem = util.randomProperty(_systems);
 		_players[client.id].system = playerSystem;
+
+		var randomSize = 300;
+		var entryPoint = {
+			x: Math.random() * randomSize - (randomSize/2),
+			y: Math.random() * randomSize - (randomSize/2),
+			rotation: Math.random() * 360 * (Math.PI/180)
+		}
+
 		// add player to all clients
 		var otherPlayers = []
 		for(var i in _players){
@@ -47,7 +56,8 @@ io.on('connection', function(client){
 				_players[i].socket.emit('player:add',{
 					profile:_players[client.id].profile,
 					system:_players[client.id].system,
-					clientId:client.id
+					clientId:client.id,
+					entryPoint:entryPoint
 				});
 				otherPlayers.push({
 					profile:_players[i].profile,
@@ -61,7 +71,8 @@ io.on('connection', function(client){
 			ack:true,
 			clientId:client.id,
 			system:playerSystem,
-			otherPlayers:otherPlayers
+			otherPlayers:otherPlayers,
+			entryPoint:entryPoint
 		});
 		// notify new client of other players
 		// client.emit('player:add',otherPlayers);

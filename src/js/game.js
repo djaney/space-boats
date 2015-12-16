@@ -18,6 +18,7 @@
 	Game.prototype.init = function(params){
 		this.user = params.user;
 		this.otherPlayers = params.otherPlayers;
+		this.entryPoint = params.entryPoint;
 	};
 	// Setup the example
 	Game.prototype.create = function() {
@@ -33,7 +34,7 @@
 		this.bgStars = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'starfield');
 
 		// create player
-		this.player = new ns.obj.SpaceObject(this.game,'ship', this.game.width/2, this.game.height/2, 180, 200, 250);
+		this.player = new ns.obj.SpaceObject(this.game,'ship', this.entryPoint.x, this.entryPoint.y, this.entryPoint.rotation, 180, 200, 250);
 
 		this.player.socketOptions.emitPhysics = true;
 		// this.player.socketOptions.watchPhysics = true;
@@ -44,10 +45,6 @@
 
 		// create controls object
 		this.controls = new ns.obj.PlayerControlsObject(this.game, this.player);
-
-		// some sprite settings
-		this.player.spr.anchor.setTo(0.5, 0.5);
-	    this.player.spr.angle = -90; // Point the ship up
 
 		// camera follows player
 		this.game.camera.follow(this.player.spr);
@@ -81,7 +78,7 @@
 			for(var i in dataArr){
 				var data = dataArr[i];
 				// create player
-				var player = new ns.obj.SpaceObject(_this.game,'ship', _this.game.width/2, _this.game.height/2, 180, 200, 250);
+				var player = new ns.obj.SpaceObject(_this.game,'ship', data.entryPoint.x, data.entryPoint.y, data.entryPoint.rotation, data.entryPoint.direction, 200, 250);
 				player.hyperspaceExit();
 
 				// some sprite settings
@@ -147,8 +144,9 @@
 	Game.prototype.render = function(){
 		this.game.debug.text('x: '+(this.player.spr.x || '--'), 2, 16, '#00ff00');
 		this.game.debug.text('y: '+(this.player.spr.y || '--'), 2, 16 * 2, '#00ff00');
-		this.game.debug.text('fps: '+(this.game.time.fps || '--'), 2, 16 * 3, '#00ff00');
-		this.game.debug.text('System: '+this.user.system, 2, 16 * 4, '#00ff00');
+		this.game.debug.text('rotation: '+(this.player.spr.rotation || '--'), 2, 16 * 3, '#00ff00');
+		this.game.debug.text('fps: '+(this.game.time.fps || '--'), 2, 16 * 4, '#00ff00');
+		this.game.debug.text('System: '+this.user.system, 2, 16 * 5, '#00ff00');
 
 		// draw radar
 		this.hud.clear();

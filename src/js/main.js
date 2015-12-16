@@ -19,7 +19,8 @@ window.loadGame = function (user) {
 			game.state.start('game',true,true,{
 				user:user,
 				clientId:ack.clientId,
-				otherPlayers:ack.otherPlayers
+				otherPlayers:ack.otherPlayers,
+				entryPoint:ack.entryPoint
 			});
 		}
 
