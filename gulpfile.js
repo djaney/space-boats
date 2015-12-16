@@ -98,27 +98,34 @@ gulp.task('watch', function () {
 
 gulp.task('processmap',function(){
     var fs = require('fs');
-    var mapJson = require('./data-src/map.json');
-
-    var systemsLayer = mapJson.layers[0].objects;
-    var map = [];
-    for(var i in systemsLayer){
-        var sys = systemsLayer[i];
-        map.push({
-            name:sys.name,
-            x:sys.width/2+sys.x,
-            y:sys.width/2+sys.y,
-            properties:sys.properties
+    var xml2js = require('xml2js');
+    var parser = new xml2js.Parser();
+    fs.readFile(__dirname + '/data-src/map.tmx', function(err, data) {
+        parser.parseString(data, function (err, result) {
+            var systemsLayer = result.map.objectgroup[0].object;
+            var map = [];
+            for(var i in systemsLayer){
+                var sys = systemsLayer[i].$;
+                map.push({
+                    name:sys.name,
+                    x:(sys.width || 0)/2+Number(sys.x),
+                    y:(sys.width || 0)/2+Number(sys.y),
+                    properties:sys.properties
+                });
+            }
+            fs.writeFile(__dirname + '/src/data/map.json', JSON.stringify(map), function(err) {
+                if(err) {
+                  console.log(err);
+              }else{
+                  console.log('built map data');
+              }
+            });
         });
-    }
-
-    fs.writeFile('./src/data/map.json', JSON.stringify(map), function(err) {
-        if(err) {
-          console.log(err);
-      }else{
-          console.log('built map data');
-      }
     });
+
+
+
+
 });
 
 gulp.task('default', ['processmap', 'connect', 'watch']);

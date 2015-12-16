@@ -10,20 +10,21 @@
   },
   "devDependencies": {
     "bower": "*",
+    "del": "*",
     "gulp": "*",
-    "gulp-util": "*",
     "gulp-concat": "*",
     "gulp-download": "*",
-    "gulp-rename": "*",
+    "gulp-express": "*",
+    "gulp-jshint": "*",
     "gulp-minify-css": "*",
     "gulp-minify-html": "*",
     "gulp-processhtml": "*",
-    "gulp-jshint": "*",
+    "gulp-rename": "*",
     "gulp-uglify": "*",
-    "gulp-express": "*",
+    "gulp-util": "*",
     "gulp-watch": "*",
     "tiny-lr": "*",
-    "del": "*"
+    "xml2js": "*"
   },
   "scripts": {
     "post-install": "node ./node_modules/bower/bin/bower install",
