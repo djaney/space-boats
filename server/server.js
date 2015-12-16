@@ -2,23 +2,24 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var util = require(__dirname + '/utils.js');
 var port = process.env.PORT || 9000;
 
 if(process.env.NODE_ENV==='production'){
-		app.use(express.static(__dirname + '/../dist'));
+	var cwd = __dirname + '/../dist';
 }else{
-		app.use(express.static(__dirname + '/../src'));
+	var cwd = __dirname + '/../src';
 }
-
+app.use(express.static(cwd));
 
 var _players = {};
+var _systems = require(cwd+ '/data/map.json');
+
 io.on('connection', function(client){
 	_players[client.id] = {
 		socket:client
 	};
-	console.log(client.id + ' connected');
 	client.on('disconnect', function(){
-		console.log(client.id + ' disconnected');
 		// add player to all clients
 		for(var i in _players){
 			if (_players[i].socket.id!==client.id){
@@ -33,19 +34,24 @@ io.on('connection', function(client){
 
 	client.on('account:login', function(u){
 		_players[client.id].profile = u;
-		console.log(_players[client.id].profile.name + ' logged in');
-
+		var playerSystem = util.randomProperty(_systems);
+		_players[client.id].system = playerSystem;
 		// add player to all clients
 		var otherPlayers = []
 		for(var i in _players){
 			if (_players[i].socket.id!==client.id){
 				// notify other players
+
+
+
 				_players[i].socket.emit('player:add',{
 					profile:_players[client.id].profile,
+					system:_players[client.id].system,
 					clientId:client.id
 				});
 				otherPlayers.push({
 					profile:_players[i].profile,
+					system:_players[i].system,
 					clientId:i
 				});
 			}
@@ -54,6 +60,7 @@ io.on('connection', function(client){
 		client.emit('account:login:ack',{
 			ack:true,
 			clientId:client.id,
+			system:playerSystem,
 			otherPlayers:otherPlayers
 		});
 		// notify new client of other players

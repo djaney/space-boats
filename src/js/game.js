@@ -148,6 +148,7 @@
 		this.game.debug.text('x: '+(this.player.spr.x || '--'), 2, 16, '#00ff00');
 		this.game.debug.text('y: '+(this.player.spr.y || '--'), 2, 16 * 2, '#00ff00');
 		this.game.debug.text('fps: '+(this.game.time.fps || '--'), 2, 16 * 3, '#00ff00');
+		this.game.debug.text('System: '+this.user.system, 2, 16 * 4, '#00ff00');
 
 		// draw radar
 		this.hud.clear();

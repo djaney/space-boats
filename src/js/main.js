@@ -15,6 +15,7 @@ window.loadGame = function (user) {
 	ns.socket.emit('account:login', user);
 	ns.socket.on('account:login:ack', function(ack){
 		if(ack.ack){
+			user.system = ack.system;
 			game.state.start('game',true,true,{
 				user:user,
 				clientId:ack.clientId,
