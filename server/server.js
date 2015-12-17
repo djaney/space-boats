@@ -95,7 +95,7 @@ setInterval(function(){
 			_players[i].socket.disconnect();
 		}
 	}
-},45);
+},2500);
 
 // server fast loop
 setInterval(function(){
@@ -117,7 +117,7 @@ setInterval(function(){
 		}
 
 
-},15);
+},400);
 
 http.listen(port, function(){
 	console.log('Listening at port: '+ port);
