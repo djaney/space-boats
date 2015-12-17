@@ -69,22 +69,16 @@
 
 	SpaceObject.prototype.update = function(){
 		if(this.socketOptions.emitPhysics && (this.game.time.now - this.lastPhysicsUpdate) > 100){
-			ns.socket.emit('physics:update',{
-				x: this.spr.x,
-				y: this.spr.y,
-				body:{
-					angularVelocity: this.spr.body.angularVelocity,
-					acceleration: {
-						x:this.spr.body.acceleration.x,
-						y:this.spr.body.acceleration.y,
-					},
-					velocity: {
-						x:this.spr.body.velocity.x,
-						y:this.spr.body.velocity.y,
-					},
-				},
-				rotation: this.spr.rotation,
-			});
+			ns.socket.emit('physics:update',[
+				this.spr.x,
+				this.spr.y,
+				this.spr.body.angularVelocity,
+				this.spr.body.acceleration.x,
+				this.spr.body.acceleration.y,
+				this.spr.body.velocity.x,
+				this.spr.body.velocity.y,
+				this.spr.rotation
+			]);
 			this.lastPhysicsUpdate = this.game.time.now;
 		}
 
@@ -115,22 +109,22 @@
 	SpaceObject.prototype.updatePhysics = function(data){
 		if(this.socketOptions.watchPhysics){
 			var lateSync = this.hasOwnProperty('physicsTimestamp') && data.timestamp < this.physicsTimestamp;
-			var interpolationPercent = 0.2;
+			var interpolationPercent = this.isCoordsLoaded ? 0.2 : 1;
 			var Point = Phaser.Point;
-			var finalPoint = Point.interpolate(new Point(this.spr.x,this.spr.y),new Point(data.x,data.y),interpolationPercent);
+			var finalPoint = Point.interpolate(new Point(this.spr.x,this.spr.y),new Point(data[0],data[1]),interpolationPercent);
 			if(!lateSync){
 				this.spr.x = finalPoint.x;
 				this.spr.y = finalPoint.y;
-				this.spr.rotation = data.rotation;
+				this.spr.rotation = data[7];
 			}
 
 			this.physicsTimestamp = data.timestamp;
 
 			// this.spr.body.angularVelocity = data.body.angularVelocity;
-			this.spr.body.acceleration.x = data.body.acceleration.x;
-			this.spr.body.acceleration.y = data.body.acceleration.y;
-			this.spr.body.velocity.x = data.body.velocity.x;
-			this.spr.body.velocity.y = data.body.velocity.y;
+			this.spr.body.acceleration.x = data[3];
+			this.spr.body.acceleration.y = data[4];
+			this.spr.body.velocity.x = data[5];
+			this.spr.body.velocity.y = data[6];
 			if(this.spr.body.acceleration.x!==0 && this.spr.body.acceleration.y!==0){
 				this.spr.frame = 1;
 			}else{
@@ -139,9 +133,7 @@
 			if(!this.isCoordsLoaded){
 				this.isCoordsLoaded = true;
 				var obj = this;
-				setTimeout(function(){
-					obj.spr.alpha = 1;
-				},100);
+				obj.spr.alpha = 1;
 
 			}
 
