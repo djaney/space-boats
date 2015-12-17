@@ -83,7 +83,13 @@
 				var y = data.entryPoint ? data.entryPoint.y : 0;
 				var rotation = data.entryPoint ? data.entryPoint.rotation : 0;
 				var player = new ns.obj.SpaceObject(_this.game,'ship', x, y, rotation, 180, 200, 250);
-				player.hyperspaceExit();
+				if(data.entryPoint){
+					player.hyperspaceExit();
+				}else{
+					player.spr.alpha = 0;
+					player.isCoordsLoaded = false;
+				}
+
 
 				// some sprite settings
 				player.user = data.profile;

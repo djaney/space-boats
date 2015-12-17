@@ -26,6 +26,7 @@
 		this.hyperspaceMaxScale = 20;
 		this.hyperspaceDirection = 0;
 		this.hyperspaceCb = null;
+		this.isCoordsLoaded = true;
 		this.socketOptions = {emitPhysics:false, watchPhysics: false};
 		// Add the ship to the stage
 	    this.spr = this.game.add.sprite(this.x, this.y, this.sprName);
@@ -132,6 +133,15 @@
 			}else{
 				this.spr.frame = 0;
 			}
+			if(!this.isCoordsLoaded){
+				this.isCoordsLoaded = true;
+				var obj = this;
+				setTimeout(function(){
+					obj.spr.alpha = 1;
+				},100);
+
+			}
+
 		}
 	};
 
