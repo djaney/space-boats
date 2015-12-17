@@ -39,6 +39,8 @@
 
 		// Set maximum velocity
 	    this.spr.body.maxVelocity.setTo(this.maxSpeed, this.maxSpeed); // x, y
+
+		this.lastPhysicsUpdate = this.game.time.now;
 	}
 	SpaceObject.prototype = new ns.obj.GameObject();
 	SpaceObject.prototype.constructor = SpaceObject;
@@ -66,7 +68,7 @@
 	};
 
 	SpaceObject.prototype.update = function(){
-		if(this.socketOptions.emitPhysics){
+		if(this.socketOptions.emitPhysics && (this.game.time.now - this.lastPhysicsUpdate) > 100){
 			ns.socket.emit('physics:update',{
 				x: this.spr.x,
 				y: this.spr.y,
@@ -83,6 +85,7 @@
 				},
 				rotation: this.spr.rotation,
 			});
+			this.lastPhysicsUpdate = this.game.time.now;
 		}
 
 		// hyperspace

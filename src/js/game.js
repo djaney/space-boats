@@ -16,7 +16,6 @@
 		this.game.load.image('starfield', '/assets/starfield.gif');
 	};
 	Game.prototype.init = function(params){
-		console.log(params);
 		this.user = params.user;
 		this.otherPlayers = params.otherPlayers;
 		this.entryPoint = params.entryPoint;

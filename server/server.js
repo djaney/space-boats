@@ -117,7 +117,7 @@ setInterval(function(){
 		}
 
 
-},400);
+},100);
 
 http.listen(port, function(){
 	console.log('Listening at port: '+ port);
