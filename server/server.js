@@ -5,7 +5,7 @@ var io = require('socket.io')(http);
 var util = require(__dirname + '/utils.js');
 var port = process.env.PORT || 9000;
 
-if(process.env.NODE_ENV==='production' || true){
+if(process.env.NODE_ENV==='production'){
 	var cwd = __dirname + '/../dist';
 }else{
 	var cwd = __dirname + '/../src';
@@ -35,10 +35,11 @@ io.on('connection', function(client){
 	client.on('account:login', function(u){
 		_players[client.id].profile = u;
 		// set random system
-		var playerSystem = util.randomProperty(_systems);
+		// var playerSystem = util.randomProperty(_systems);
+		var playerSystem = "Sol";
 		_players[client.id].system = playerSystem;
 
-		var randomSize = 300;
+		var randomSize = 500;
 		var entryPoint = {
 			x: Math.random() * randomSize - (randomSize/2),
 			y: Math.random() * randomSize - (randomSize/2),

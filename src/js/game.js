@@ -16,6 +16,7 @@
 		this.game.load.image('starfield', '/assets/starfield.gif');
 	};
 	Game.prototype.init = function(params){
+		console.log(params);
 		this.user = params.user;
 		this.otherPlayers = params.otherPlayers;
 		this.entryPoint = params.entryPoint;
@@ -78,7 +79,10 @@
 			for(var i in dataArr){
 				var data = dataArr[i];
 				// create player
-				var player = new ns.obj.SpaceObject(_this.game,'ship', data.entryPoint.x, data.entryPoint.y, data.entryPoint.rotation, data.entryPoint.direction, 200, 250);
+				var x = data.entryPoint ? data.entryPoint.x : 0;
+				var y = data.entryPoint ? data.entryPoint.y : 0;
+				var rotation = data.entryPoint ? data.entryPoint.rotation : 0;
+				var player = new ns.obj.SpaceObject(_this.game,'ship', x, y, rotation, 180, 200, 250);
 				player.hyperspaceExit();
 
 				// some sprite settings
