@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-node ../node_modules/gulp/bin/gulp build
-node ../server/server.js
