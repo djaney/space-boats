@@ -5,12 +5,10 @@ var io = require('socket.io')(http);
 var util = require(__dirname + '/utils.js');
 var port = process.env.PORT || 9000;
 
-if(process.env.NODE_ENV==='production'){
-	var cwd = __dirname + '/../dist';
-}else{
-	var cwd = __dirname + '/../src';
-}
+var cwd = __dirname + '/../src';
+
 app.use(express.static(cwd));
+app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/build/phaser.min.js'));
 
 var _players = {};
 var _systems = require(cwd+ '/assets/map.json');

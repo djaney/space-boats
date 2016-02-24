@@ -15,7 +15,7 @@ paths = {
   assets: 'src/assets/**/*',
   css:    'src/css/*.css',
   libs:   [
-    'node_modules/phaser/build/phaser.min.js'
+    'src/node_modules/phaser/build/phaser.min.js'
   ],
   js:     ['src/js/**/*.js'],
   dist:   './dist/'
@@ -128,4 +128,4 @@ gulp.task('processmap',function(){
 });
 
 gulp.task('default', ['processmap', 'connect', 'watch']);
-gulp.task('build', ['clean', 'copy-assets', 'copy-vendor', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);
+// gulp.task('build', ['clean', 'copy-assets', 'copy-vendor', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);

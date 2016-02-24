@@ -10,62 +10,21 @@
 </head>
 
 <body>
-    <script>
 
-        // window.fbAsyncInit = function() {
-        //     FB.init({
-        //         appId      : '501757653337794',
-        //         xfbml      : true,
-        //         version    : 'v2.5'
-        //     });
-        //     FB.getLoginStatus(function(response) {
-        //         if (response.status === 'connected') {
-        //             FB.api('/me', function(response) {
-        //             window.loadGame(response);
-        //         });
-        //         } else if (response.status === 'not_authorized') {
-        //             FB.login();
-        //         } else {
-        //             FB.login();
-        //         }
-        //     });
-		//
-        // };
-		//
-        // (function(d, s, id){
-        //     var js, fjs = d.getElementsByTagName(s)[0];
-        //     if (d.getElementById(id)) {return;}
-        //     js = d.createElement(s); js.id = id;
-        //     js.src = "//connect.facebook.net/en_US/sdk.js";
-        //     fjs.parentNode.insertBefore(js, fjs);
-        // }(document, 'script', 'facebook-jssdk'));
-    </script>
     <div id="space-boats-game" class="game"></div>
 
-    <!-- build:remove -->
-    <script src="http://localhost:35729/livereload.js"></script>
-    <!-- /build -->
-
-    <!-- build:js phaser.min.js-->
-    <script src="bower_components/phaser-official/build/phaser.min.js"></script>
-    <!-- /build -->
-
+    <script src="/phaser.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 
-    <!-- build:js main.min.js -->
-    <script src="js/boot.js"></script>
-    <script src="js/preloader.js"></script>
-    <script src="js/disconnected.js"></script>
-    <script src="js/game.js"></script>
-    <script src="js/objects/GameObject.js"></script>
-    <script src="js/objects/SpaceObject.js"></script>
-    <script src="js/objects/PlayerControlsObject.js"></script>
-    <script src="js/objects/PlayerAccountModel.js"></script>
-    <script src="js/main.js"></script>
-
-
-    <!-- yo phaser:state new-state-files-put-here -->
-    <!-- /build -->
+    <script src="/js/boot.js"></script>
+    <script src="/js/preloader.js"></script>
+    <script src="/js/disconnected.js"></script>
+    <script src="/js/game.js"></script>
+    <script src="/js/objects/GameObject.js"></script>
+    <script src="/js/objects/SpaceObject.js"></script>
+    <script src="/js/objects/PlayerControlsObject.js"></script>
+    <script src="/js/objects/PlayerAccountModel.js"></script>
+    <script src="/js/main.js"></script>
 
 </body>
 </html>
