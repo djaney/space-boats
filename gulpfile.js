@@ -125,5 +125,5 @@ gulp.task('processmap',function(){
 });
 
 gulp.task('default', ['processmap', 'connect', 'watch']);
-gulp.task('build', ['processmap','scripts','assets','html']);
-gulp.task('heroku:production', ['processmap','scripts','assets','html']);
+gulp.task('build', ['scripts','assets','html']);
+gulp.task('heroku:production', ['scripts','assets','html']);
