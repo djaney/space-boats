@@ -9,6 +9,7 @@
     "phaser": "^2.4.6",
     "socket.io": "^1.3.7",
     "gulp": "*",
+    "gulp-util": "*",
     "del": "*",
     "gulp-concat": "*",
     "gulp-minify-html": "*",
@@ -17,7 +18,6 @@
   },
   "devDependencies": {
       "gulp-express": "*",
-      "gulp-util": "*",
       "gulp-watch": "*",
       "xml2js": "*"
   },
