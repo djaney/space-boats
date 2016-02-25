@@ -7,9 +7,8 @@
   "dependencies": {
     "express": "~4.13.3",
     "phaser": "^2.4.6",
-    "socket.io": "^1.3.7"
-  },
-  "devDependencies": {
+    "socket.io": "^1.3.7",
+
     "del": "*",
     "gulp": "*",
     "gulp-coffee": "^2.3.1",
@@ -26,6 +25,9 @@
     "gulp-watch": "*",
     "tiny-lr": "*",
     "xml2js": "*"
+  },
+  "devDependencies": {
+
   },
   "scripts": {
     "start": "node server/server",
