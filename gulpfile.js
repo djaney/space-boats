@@ -8,41 +8,44 @@ var gulp = require('gulp')
   , processhtml = require('gulp-processhtml')
   , jshint = require('gulp-jshint')
   , uglify = require('gulp-uglify')
+  , coffee = require('gulp-coffee')
   , server = require('gulp-express')
   , paths;
 
 paths = {
-  assets: 'src/assets/**/*',
-  css:    'src/css/*.css',
-  libs:   [
-    'src/node_modules/phaser/build/phaser.min.js'
-  ],
-  js:     ['src/js/**/*.js'],
-  dist:   './dist/'
+    assets: 'src/assets/**/*',
+    css:    'src/css/*.css',
+    libs:   [
+        'src/node_modules/phaser/build/phaser.min.js'
+    ],
+    coffee:     ['src/coffee/**/*.coffee'],
+    index: 'src/index.html',
+    dist:{
+        js: 'dist/js',
+        assets: 'dist/assets',
+        index: 'dist'
+    }
 };
 
-gulp.task('clean', function (cb) {
-  del([paths.dist], cb);
+gulp.task('clean', function () {
+    return del([paths.dist.index]);
 });
 
-gulp.task('copy-assets', function () {
-  gulp.src(paths.assets)
-    .pipe(gulp.dest(paths.dist + 'assets'))
-    .on('error', gutil.log);
+gulp.task('assets', ['clean'], function () {
+    gulp.src(paths.assets)
+        .pipe(gulp.dest(paths.dist.assets))
+        .on('error', gutil.log);
 });
 
-gulp.task('copy-vendor', function () {
-  gulp.src(paths.libs)
-    .pipe(gulp.dest(paths.dist))
-    .on('error', gutil.log);
-});
 
-gulp.task('uglify', ['lint'], function () {
-  gulp.src(paths.js)
-    .pipe(concat('main.min.js'))
-    .pipe(gulp.dest(paths.dist))
-    .pipe(uglify({outSourceMaps: false}))
-    .pipe(gulp.dest(paths.dist));
+gulp.task('scripts', ['clean'], function () {
+
+    gulp.src(paths.coffee)
+        .pipe(concat('scripts.coffee'))
+        .pipe(coffee())
+        // .pipe(uglify())
+        .pipe(gulp.dest(paths.dist.js))
+        .on('error', gutil.log);
 });
 
 gulp.task('minifycss', function () {
@@ -56,17 +59,17 @@ gulp.task('minifycss', function () {
     .on('error', gutil.log);
 });
 
-gulp.task('processhtml', function() {
-  gulp.src('src/index.html')
+gulp.task('html', ['clean'], function() {
+  gulp.src(paths.index)
     .pipe(processhtml({}))
-    .pipe(gulp.dest(paths.dist))
+    .pipe(gulp.dest(paths.dist.index))
     .on('error', gutil.log);
 });
 
 gulp.task('minifyhtml', function() {
   gulp.src('dist/index.html')
     .pipe(minifyhtml())
-    .pipe(gulp.dest(paths.dist))
+    .pipe(gulp.dest(paths.dist.index))
     .on('error', gutil.log);
 });
 
@@ -77,11 +80,6 @@ gulp.task('lint', function() {
     .on('error', gutil.log);
 });
 
-gulp.task('html', function(){
-  gulp.src('src/*.html')
-    .pipe(server.notify())
-    .on('error', gutil.log);
-});
 
 gulp.task('connect', function () {
 
@@ -92,6 +90,7 @@ gulp.task('connect', function () {
 gulp.task('watch', function () {
   gulp.watch(paths.js, ['lint',server.notify]);
   gulp.watch(['./src/index.html', paths.css, paths.js], ['html']);
+  gulp.watch([paths.coffee], ['scripts']);
   gulp.watch(['./server/**/*'],['lint',server.run]);
   gulp.watch(['./data-src/map.json'],['processmap']);
 });
@@ -114,10 +113,8 @@ gulp.task('processmap',function(){
             }
             fs.writeFile(__dirname + '/src/assets/map.json', JSON.stringify(map), function(err) {
                 if(err) {
-                  console.log(err);
-              }else{
-                  console.log('built map data');
-              }
+                    console.log(err);
+                }
             });
         });
     });
@@ -128,4 +125,4 @@ gulp.task('processmap',function(){
 });
 
 gulp.task('default', ['processmap', 'connect', 'watch']);
-// gulp.task('build', ['clean', 'copy-assets', 'copy-vendor', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);
+gulp.task('build', ['processmap','scripts','assets','html']);

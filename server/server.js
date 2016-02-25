@@ -5,7 +5,11 @@ var io = require('socket.io')(http);
 var util = require(__dirname + '/utils.js');
 var port = process.env.PORT || 9000;
 
-var cwd = __dirname + '/../src';
+if(process.env.NODE_ENV==='production'){
+	var cwd = __dirname + '/../src';
+}else{
+	var cwd = __dirname + '/../dist';
+}
 
 app.use(express.static(cwd));
 app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/build/phaser.min.js'));
