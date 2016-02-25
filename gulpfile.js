@@ -5,7 +5,6 @@ var gulp = require('gulp')
   , minifyhtml = require('gulp-minify-html')
   , processhtml = require('gulp-processhtml')
   , coffee = require('gulp-coffee')
-  , server = require('gulp-express')
   , paths;
 
 paths = {
@@ -61,8 +60,8 @@ gulp.task('minifyhtml', function() {
 
 
 gulp.task('connect', function () {
-
-  server.run(['server/server.js']);
+    var server = require('gulp-express')
+    server.run(['server/server.js']);
 
 });
 
