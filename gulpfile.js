@@ -2,12 +2,8 @@ var gulp = require('gulp')
   , gutil = require('gulp-util')
   , del = require('del')
   , concat = require('gulp-concat')
-  , rename = require('gulp-rename')
-  , minifycss = require('gulp-minify-css')
   , minifyhtml = require('gulp-minify-html')
   , processhtml = require('gulp-processhtml')
-  , jshint = require('gulp-jshint')
-  , uglify = require('gulp-uglify')
   , coffee = require('gulp-coffee')
   , server = require('gulp-express')
   , paths;
@@ -43,21 +39,10 @@ gulp.task('scripts', ['clean'], function () {
     gulp.src(paths.coffee)
         .pipe(concat('scripts.coffee'))
         .pipe(coffee())
-        // .pipe(uglify())
         .pipe(gulp.dest(paths.dist.js))
         .on('error', gutil.log);
 });
 
-gulp.task('minifycss', function () {
- gulp.src(paths.css)
-    .pipe(minifycss({
-      keepSpecialComments: false,
-      removeEmpty: true
-    }))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(gulp.dest(paths.dist))
-    .on('error', gutil.log);
-});
 
 gulp.task('html', ['clean'], function() {
   gulp.src(paths.index)
@@ -73,12 +58,6 @@ gulp.task('minifyhtml', function() {
     .on('error', gutil.log);
 });
 
-gulp.task('lint', function() {
-  gulp.src(paths.js)
-    .pipe(jshint('.jshintrc'))
-    .pipe(jshint.reporter('default'))
-    .on('error', gutil.log);
-});
 
 
 gulp.task('connect', function () {
@@ -88,10 +67,8 @@ gulp.task('connect', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(paths.js, ['lint',server.notify]);
   gulp.watch(['./src/index.html', paths.css, paths.js], ['html']);
   gulp.watch([paths.coffee], ['scripts']);
-  gulp.watch(['./server/**/*'],['lint',server.run]);
   gulp.watch(['./data-src/map.json'],['processmap']);
 });
 

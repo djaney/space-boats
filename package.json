@@ -8,26 +8,18 @@
     "express": "~4.13.3",
     "phaser": "^2.4.6",
     "socket.io": "^1.3.7",
-
-    "del": "*",
     "gulp": "*",
-    "gulp-coffee": "^2.3.1",
+    "del": "*",
     "gulp-concat": "*",
-    "gulp-download": "*",
-    "gulp-express": "*",
-    "gulp-jshint": "*",
-    "gulp-minify-css": "*",
     "gulp-minify-html": "*",
     "gulp-processhtml": "*",
-    "gulp-rename": "*",
-    "gulp-uglify": "*",
-    "gulp-util": "*",
-    "gulp-watch": "*",
-    "tiny-lr": "*",
-    "xml2js": "*"
+    "gulp-coffee": "^2.3.1",
   },
   "devDependencies": {
-
+      "gulp-express": "*",
+      "gulp-util": "*",
+      "gulp-watch": "*",
+      "xml2js": "*"
   },
   "scripts": {
     "start": "node server/server",
