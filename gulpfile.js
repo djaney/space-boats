@@ -27,7 +27,7 @@ gulp.task('clean', function () {
     return del([paths.dist.index]);
 });
 
-gulp.task('assets', ['clean'], function () {
+gulp.task('assets', ['processmap','clean'], function () {
     gulp.src(paths.assets)
         .pipe(gulp.dest(paths.dist.assets))
         .on('error', gutil.log);
@@ -72,10 +72,15 @@ gulp.task('watch', function () {
   gulp.watch([paths.maps + '/**/*.tmx'],['processmap']);
 });
 
-gulp.task('processmap',function(){
+gulp.task('processmap',['clean'],function(){
     var fs = require('fs');
     var xml2js = require('xml2js');
     var parser = new xml2js.Parser();
+
+    if (!fs.existsSync(__dirname + '/' + paths.dist.index)){
+        fs.mkdirSync(__dirname + '/' + paths.dist.index);
+    }
+
     fs.readFile(__dirname + '/' + paths.maps + '/universe.tmx', function(err, data) {
         if(err){
             throw err;
@@ -94,9 +99,9 @@ gulp.task('processmap',function(){
                     properties:sys.properties
                 };
             }
-            fs.writeFile(__dirname + '/' + paths.dist.assets + '/map.json', JSON.stringify(map), function(err) {
+            fs.writeFile(__dirname + '/' + paths.dist.index + '/map.json', JSON.stringify(map), function(err) {
                 if(err) {
-                    console.log(err);
+                    throw err;
                 }
             });
         });
@@ -107,6 +112,6 @@ gulp.task('processmap',function(){
 
 });
 
-gulp.task('default', ['processmap', 'connect', 'watch']);
-gulp.task('build', ['scripts','assets','html']);
-gulp.task('heroku:production', ['processmap','scripts','assets','html']);
+gulp.task('default', ['connect', 'watch']);
+gulp.task('build', ['scripts','assets', 'html']);
+gulp.task('heroku:production', ['scripts','assets','html']);

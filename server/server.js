@@ -16,7 +16,7 @@ app.use(express.static(cwd));
 app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/build/phaser.min.js'));
 
 var _players = {};
-var _systems = require(cwd+ '/assets/map.json');
+var _systems = require(cwd+ '/map.json');
 
 io.on('connection', function(client){
 	_players[client.id] = {
