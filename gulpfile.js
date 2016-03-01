@@ -60,16 +60,14 @@ gulp.task('minifyhtml', function() {
 
 
 
-gulp.task('connect', function () {
+gulp.task('connect',['build'], function () {
     var server = require('gulp-express')
     server.run(['server/server.js']);
 
 });
 
 gulp.task('watch', function () {
-  gulp.watch([paths.css, paths.coffee], ['scripts']);
-  gulp.watch([paths.coffee], ['scripts']);
-  gulp.watch([paths.maps + '/**/*.tmx'],['processmap']);
+  gulp.watch([paths.css, paths.coffee,paths.coffee,paths.maps + '/**/*.tmx'], ['build']);
 });
 
 gulp.task('processmap',['clean'],function(){
@@ -112,6 +110,6 @@ gulp.task('processmap',['clean'],function(){
 
 });
 
-gulp.task('default', ['connect', 'watch']);
+gulp.task('default', ['connect']);
 gulp.task('build', ['scripts','assets', 'html']);
 gulp.task('heroku:production', ['scripts','assets','html']);
