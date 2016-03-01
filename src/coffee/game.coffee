@@ -97,6 +97,13 @@ do ->
                 return
 
             ns.socket.on 'player:remove', @playerRemoveCb
+
+
+            @playerControls = (data) ->
+                _this.controls.onControls data
+
+            ns.socket.on 'player:controls', @playerControls
+
             # add other players
             @playerAddCb @otherPlayers
             delete @otherPlayers
@@ -106,6 +113,7 @@ do ->
             ns.socket.removeListener 'physics:update', @physicsUpdateCb
             ns.socket.removeListener 'player:add', @playerAddCb
             ns.socket.removeListener 'player:remove', @playerRemoveCb
+            ns.socket.removeListener 'player:controls', @playerControls
             return
 
         # The update() method is called every frame
@@ -133,6 +141,7 @@ do ->
             @game.debug.text 'rotation: ' + (@player.spr.rotation or '--'), 2, 16 * 3, '#00ff00'
             @game.debug.text 'fps: ' + (@game.time.fps or '--'), 2, 16 * 4, '#00ff00'
             @game.debug.text 'System: ' + @user.system, 2, 16 * 5, '#00ff00'
+            @game.debug.text 'Warp: ' + @controls.isWarpControlVisible, 2, 16 * 6, '#00ff00'
             # draw radar
             @hud.clear()
             # radar body

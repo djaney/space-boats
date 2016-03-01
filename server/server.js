@@ -17,6 +17,10 @@ app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/bui
 
 var _players = {};
 var _systems = require(cwd+ '/map.json');
+var _systemNames = [];
+for(var i in _systems){
+	_systemNames.push(i);
+}
 
 io.on('connection', function(client){
 	_players[client.id] = {
@@ -90,6 +94,15 @@ io.on('connection', function(client){
 		_players[client.id].lastPhysicsUpdate = process.uptime();
 	});
 
+	client.on('player:controls', function(params){
+
+		if(params.action == 'warp:init'){
+			client.emit('player:controls', {
+				action: params.action,
+				data:_systemNames
+			});
+		}
+	});
 });
 
 setInterval(function(){
