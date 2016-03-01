@@ -14,11 +14,13 @@ window.loadGame = (user) ->
     ns.socket.on 'account:login:ack', (ack) ->
         if ack.ack
             user.system = ack.system
-            game.state.start 'game', true, true,
+            game.state.start 'game', true, true,{
                 user: user
                 clientId: ack.clientId
                 otherPlayers: ack.otherPlayers
                 entryPoint: ack.entryPoint
+            }
+
         return
         ns.socket.on 'disconnect', ->
             game.state.start 'disconnected'

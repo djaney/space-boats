@@ -4,7 +4,6 @@ do ->
     class Game
         constructor: ->
             @worldSize = 800
-            @starCount = 300
             @cameraPos = new (Phaser.Point)(0, 0)
             @stars = []
             @players = {}
@@ -19,7 +18,9 @@ do ->
             return
 
         init: (params) ->
+            ns.gameParams = params;
             @user = params.user
+            @clientId = params.clientId
             @otherPlayers = params.otherPlayers
             @entryPoint = params.entryPoint
             return
@@ -47,6 +48,9 @@ do ->
             # create HUD
             @hud = @game.add.graphics(0, 0)
             @hud.fixedToCamera = true
+
+            @player.hyperspaceExit()
+
             # physics updates
             @physicsUpdateCb = (data) ->
                 for i of data

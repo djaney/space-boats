@@ -86,7 +86,14 @@ class PlayerControlsObject
 
     hideWarpControls: ->
         @isWarpControlVisible = false;
-        console.log @nearestSystems
+        #warp to another system
+        @player.hyperspaceEnter ->        
+            @game.state.start 'game', true, true,
+                user: @ns.gameParams.user
+                clientId: @ns.gameParams.clientId
+                otherPlayers: @ns.gameParams.otherPlayers
+                entryPoint: @ns.gameParams.entryPoint
+
 
     initWarp: (data) ->
         @nearestSystems = data
