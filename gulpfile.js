@@ -67,7 +67,7 @@ gulp.task('connect', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(['./src/index.html', paths.css, paths.coffee], ['scripts','html']);
+  gulp.watch([paths.css, paths.coffee], ['scripts']);
   gulp.watch([paths.coffee], ['scripts']);
   gulp.watch([paths.maps + '/**/*.tmx'],['processmap']);
 });
