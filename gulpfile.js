@@ -19,7 +19,8 @@ paths = {
         js: 'dist/js',
         assets: 'dist/assets',
         index: 'dist'
-    }
+    },
+    maps: 'src/maps'
 };
 
 gulp.task('clean', function () {
@@ -66,17 +67,23 @@ gulp.task('connect', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(['./src/index.html', paths.css, paths.js], ['html']);
+  gulp.watch(['./src/index.html', paths.css, paths.coffee], ['scripts','html']);
   gulp.watch([paths.coffee], ['scripts']);
-  gulp.watch(['./data-src/map.json'],['processmap']);
+  gulp.watch([paths.maps + '/**/*.tmx'],['processmap']);
 });
 
 gulp.task('processmap',function(){
     var fs = require('fs');
     var xml2js = require('xml2js');
     var parser = new xml2js.Parser();
-    fs.readFile(__dirname + '/data-src/map.tmx', function(err, data) {
+    fs.readFile(__dirname + '/' + paths.maps + '/universe.tmx', function(err, data) {
+        if(err){
+            throw err;
+        }
         parser.parseString(data, function (err, result) {
+            if(err){
+                throw err;
+            }
             var systemsLayer = result.map.objectgroup[0].object;
             var map = {};
             for(var i in systemsLayer){
@@ -87,7 +94,7 @@ gulp.task('processmap',function(){
                     properties:sys.properties
                 };
             }
-            fs.writeFile(__dirname + '/src/assets/map.json', JSON.stringify(map), function(err) {
+            fs.writeFile(__dirname + '/' + paths.dist.assets + '/map.json', JSON.stringify(map), function(err) {
                 if(err) {
                     console.log(err);
                 }
@@ -102,4 +109,4 @@ gulp.task('processmap',function(){
 
 gulp.task('default', ['processmap', 'connect', 'watch']);
 gulp.task('build', ['scripts','assets','html']);
-gulp.task('heroku:production', ['scripts','assets','html']);
+gulp.task('heroku:production', ['processmap','scripts','assets','html']);
