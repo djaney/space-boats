@@ -107,7 +107,3 @@ class SpaceObject extends GameObject
                 @isCoordsLoaded = true
                 obj = this
                 obj.spr.alpha = 1
-
-window['space-boats'] = window['space-boats'] or {}
-window['space-boats'].obj = window['space-boats'].obj or {}
-window['space-boats'].obj.SpaceObject = SpaceObject

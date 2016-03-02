@@ -87,7 +87,7 @@ class PlayerControlsObject
     hideWarpControls: ->
         @isWarpControlVisible = false;
         #warp to another system
-        @player.hyperspaceEnter ->        
+        @player.hyperspaceEnter ->
             @game.state.start 'game', true, true,
                 user: @ns.gameParams.user
                 clientId: @ns.gameParams.clientId
@@ -97,7 +97,3 @@ class PlayerControlsObject
 
     initWarp: (data) ->
         @nearestSystems = data
-
-window['space-boats'] = window['space-boats'] or {}
-window['space-boats'].obj = window['space-boats'].obj or {}
-window['space-boats'].obj.PlayerControlsObject = PlayerControlsObject
