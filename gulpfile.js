@@ -27,14 +27,14 @@ gulp.task('clean', function () {
     return del([paths.dist.index]);
 });
 
-gulp.task('assets', ['processmap','clean'], function () {
+gulp.task('assets', ['processmap'], function () {
     gulp.src(paths.assets)
         .pipe(gulp.dest(paths.dist.assets))
         .on('error', gutil.log);
 });
 
 
-gulp.task('scripts', ['clean'], function () {
+gulp.task('scripts', function () {
 
     gulp.src(paths.coffee)
         .pipe(concat('scripts.coffee'))
@@ -44,7 +44,7 @@ gulp.task('scripts', ['clean'], function () {
 });
 
 
-gulp.task('html', ['clean'], function() {
+gulp.task('html', function() {
   gulp.src(paths.index)
     .pipe(processhtml({}))
     .pipe(gulp.dest(paths.dist.index))
@@ -67,10 +67,11 @@ gulp.task('connect',['build'], function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch([paths.css, paths.coffee,paths.coffee,paths.maps + '/**/*.tmx'], ['build']);
+  gulp.watch([paths.coffee], ['scripts']);
+  gulp.watch([paths.maps + '/**/*.tmx'], ['processmap']);
 });
 
-gulp.task('processmap',['clean'],function(){
+gulp.task('processmap',function(){
     var fs = require('fs');
     var xml2js = require('xml2js');
     var parser = new xml2js.Parser();
@@ -110,6 +111,6 @@ gulp.task('processmap',['clean'],function(){
 
 });
 
-gulp.task('default', ['connect']);
+gulp.task('default', ['watch','connect']);
 gulp.task('build', ['scripts','assets', 'html']);
 gulp.task('heroku:production', ['scripts','assets','html']);
