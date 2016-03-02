@@ -104,7 +104,7 @@ do ->
 
 
             @playerControls = (data) ->
-                _this.controls.onControls data
+                _this.controls.consumeControls data
 
             ns.socket.on 'player:controls', @playerControls
 

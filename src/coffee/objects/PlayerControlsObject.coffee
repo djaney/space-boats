@@ -69,10 +69,11 @@ class PlayerControlsObject
         isActive
 
     # controls handler
-    onControls: (res) ->
+    consumeControls: (res) ->
         if res.action == 'warp:init'
             @initWarp res.data
-
+        if res.action == 'warp:start'
+            @goWarp res.data
     emitControls: (action, data) ->
         @ns.socket.emit 'player:controls', {
             action: action
@@ -80,20 +81,23 @@ class PlayerControlsObject
         }
 
     # warping
+    initWarp: (data) ->
+        @nearestSystems = data
+    startWarp: (warpTo) ->
+        @emitControls 'warp:start', warpTo
+    goWarp: (data) ->
+        console.log data
+        @player.hyperspaceEnter ->
+            @ns.gameParams.user.system = data.system;
+            @game.state.start 'game', true, true,
+                user: @ns.gameParams.user
+                clientId: @ns.gameParams.clientId
+                otherPlayers: data.otherPlayers
+                entryPoint: data.entryPoint
     showWarpControls: ->
         @isWarpControlVisible = true;
         @emitControls 'warp:init'
 
     hideWarpControls: ->
-        @isWarpControlVisible = false;
-        #warp to another system
-        @player.hyperspaceEnter ->
-            @game.state.start 'game', true, true,
-                user: @ns.gameParams.user
-                clientId: @ns.gameParams.clientId
-                otherPlayers: @ns.gameParams.otherPlayers
-                entryPoint: @ns.gameParams.entryPoint
-
-
-    initWarp: (data) ->
-        @nearestSystems = data
+        @isWarpControlVisible = false
+        @startWarp @nearestSystems[Math.floor(Math.random()*@nearestSystems.length)]
