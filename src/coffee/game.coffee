@@ -5,7 +5,6 @@ do ->
         constructor: ->
             @worldSize = 800
             @cameraPos = new (Phaser.Point)(0, 0)
-            @stars = []
             @players = {}
             return
 
@@ -29,6 +28,7 @@ do ->
 
         create: ->
             _this = this
+            @players = {}
             @hudSettings = radar:
                 diameter: @game.width * 0.15
                 margin: 10
@@ -50,7 +50,6 @@ do ->
             @hud.fixedToCamera = true
 
             @player.hyperspaceExit()
-
             # physics updates
             @physicsUpdateCb = (data) ->
                 for i of data

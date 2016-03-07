@@ -145,15 +145,15 @@ io.on('connection', function(client){
 							});
 						}
 
-						client.emit('player:controls', {
-							action: params.action,
-							data:{
-								otherPlayers: otherPlayers,
-								system: _players[client.id].system,
-								entryPoint: entryPoint
-							}
-						});
 					}
+					client.emit('player:controls', {
+						action: params.action,
+						data:{
+							otherPlayers: otherPlayers,
+							system: _players[client.id].system,
+							entryPoint: entryPoint
+						}
+					});
 				}
 
 			})();
