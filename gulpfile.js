@@ -20,7 +20,8 @@ paths = {
         assets: 'dist/assets',
         index: 'dist'
     },
-    maps: 'src/maps'
+    maps: 'src/maps',
+    server: 'server/**/*'
 };
 
 gulp.task('clean', function () {
@@ -61,9 +62,16 @@ gulp.task('minifyhtml', function() {
 
 
 gulp.task('connect',['build'], function () {
-    var server = require('gulp-express')
-    server.run(['server/server.js']);
-
+    // var server = require('gulp-express');
+    // server.run(['server/server.js']);
+    // gulp.watch([paths.server], server.notify);
+    var nodemon = require('nodemon');
+    nodemon({
+        script  : 'server/server.js',
+        watch   : paths.server
+        //...add nodeArgs: ['--debug=5858'] to debug
+        //..or nodeArgs: ['--debug-brk=5858'] to debug at server start
+    });
 });
 
 gulp.task('watch', function () {

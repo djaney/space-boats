@@ -19,11 +19,12 @@
   },
   "devDependencies": {
       "gulp-express": "*",
-      "gulp-watch": "*"
+      "gulp-watch": "*",
+      "gulp-nodemon": "*",
+      "nodemon": "*"
   },
   "scripts": {
-    "start": "node server/server",
-    "build": "node node_modules/gulp/bin/gulp.js build",
-    "watch": "node node_modules/gulp/bin/gulp.js"
+    "start": "node node_modules/gulp/bin/gulp.js",
+    "build": "node node_modules/gulp/bin/gulp.js build"
   }
 }
