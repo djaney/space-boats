@@ -18,8 +18,31 @@ app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/bui
 var _players = {};
 var _systems = require(cwd+ '/map.json');
 var _systemNames = [];
+var _nearbySystems = [];
+var _nearbyDistance = 300;
 for(var i in _systems){
 	_systemNames.push(i);
+	_nearbySystems[i] = [];
+	for(var j in _systems){
+		if(i!=j){
+			var a = _systems[i];
+			var b = _systems[j];
+
+			var distance = Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+			var angleDeg = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+			if(distance<_nearbyDistance){
+				_nearbySystems[i].push({
+					name: j,
+					angle: angleDeg
+				});
+			}
+
+		}
+
+	}
+	if(_nearbySystems[i].length==0){
+		console.error(i+" has no nearby system");
+	}
 }
 
 io.on('connection', function(client){
@@ -98,13 +121,7 @@ io.on('connection', function(client){
 
 		if(params.action == 'warp:init'){
 			(function(){
-				var names = [];
-				for(var i in _systemNames){
-					if(_systemNames[i]!=_players[client.id].system){
-						names.push(_systemNames[i]);
-					}
-
-				}
+				var names = _nearbySystems[_players[client.id].system];
 				client.emit('player:controls', {
 					action: params.action,
 					data:names

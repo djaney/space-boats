@@ -117,7 +117,8 @@ do ->
             ns.socket.removeListener 'player:add', @playerAddCb
             ns.socket.removeListener 'player:remove', @playerRemoveCb
             ns.socket.removeListener 'player:controls', @playerControls
-            return
+
+
 
         # The update() method is called every frame
 
@@ -173,7 +174,18 @@ do ->
                     @hud.lineStyle 0
                     @hud.drawCircle @game.width - (@hudSettings.radar.diameter / 2) - (@hudSettings.radar.margin) + xDiff, @hudSettings.radar.diameter / 2 + @hudSettings.radar.margin + yDiff, 3
                     @hud.endFill()
-            return
+
+            # draw planets here
+            if @controls.nearestSystems
+                for i of @controls.nearestSystems
+                    @hud.beginFill 0x0BFF0B, 0.5
+                    @hud.drawCircle @game.width / 2, @game.height / 2, 50
+                    @hud.endFill()
+                    @game.debug.text @controls.nearestSystems[i].name , 50, 16 * i, '#00ff00'
+
+
+
+
 
     window['space-boats'] = window['space-boats'] or {}
     window['space-boats'].Game = Game

@@ -43,7 +43,8 @@ class PlayerControlsObject
         else if !@warpInputIsActive() and @isWarpControlVisible
             @hideWarpControls()
 
-
+    render: ->
+        console.log @nearestSystems
 
     leftInputIsActive: ->
         isActive = false
@@ -86,7 +87,6 @@ class PlayerControlsObject
     startWarp: (warpTo) ->
         @emitControls 'warp:start', warpTo
     goWarp: (data) ->
-        console.log data
         @player.hyperspaceEnter ->
             @ns.gameParams.user.system = data.system;
             @game.state.start 'game', true, true,
@@ -100,4 +100,5 @@ class PlayerControlsObject
 
     hideWarpControls: ->
         @isWarpControlVisible = false
-        @startWarp @nearestSystems[Math.floor(Math.random()*@nearestSystems.length)]
+        system = @nearestSystems[Math.floor(Math.random()*@nearestSystems.length)];
+        @startWarp system.name
