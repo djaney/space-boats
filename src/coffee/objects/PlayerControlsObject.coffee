@@ -5,6 +5,8 @@ class PlayerControlsObject
         @player = player
         @isWarpControlVisible = false
         @nearestSystems = []
+        @nearestSystemsHudObjects = []
+        @minWarpAngle = 0.174533
         # Capture certain keys to prevent their default actions in the browser.
         # This is only necessary because this is an HTML5 game. Games on other
         # platforms may not need code like this.
@@ -84,6 +86,23 @@ class PlayerControlsObject
     # warping
     initWarp: (data) ->
         @nearestSystems = data
+        _this = this
+        do ->
+            center = {
+                x: _this.game.width/2
+                y: _this.game.height/2
+            }
+            dist = 100
+            for i of data
+                x = dist * Math.cos data[i].angle
+                y = dist * Math.sin data[i].angle
+                txt = _this.game.add.text 0, 0, data[i].name, {
+                    fill: '#0bff0b'
+                    font: '12px'
+                }
+                txt.fixedToCamera = true
+                txt.cameraOffset.setTo center.x+x,center.y+y
+                _this.nearestSystemsHudObjects.push txt
     startWarp: (warpTo) ->
         @emitControls 'warp:start', warpTo
     goWarp: (data) ->
@@ -100,5 +119,51 @@ class PlayerControlsObject
 
     hideWarpControls: ->
         @isWarpControlVisible = false
-        system = @nearestSystems[Math.floor(Math.random()*@nearestSystems.length)];
-        @startWarp system.name
+        system = null
+        for i of @nearestSystemsHudObjects
+            @game.world.remove @nearestSystemsHudObjects[i]
+        # @nearestSystemsHudObjects = []
+        minDir = -1
+        a2 = Phaser.Math.wrapAngle @player.spr.rotation, true
+        for i of @nearestSystems
+            a1 = Phaser.Math.wrapAngle  @nearestSystems[i].angle, true
+            angleDist = Math.abs a1-a2
+
+            if angleDist < minDir or minDir<0
+                if angleDist<@minWarpAngle
+                    minDir = angleDist
+                    system = @nearestSystems[i]
+
+
+        if system and minDir<@minWarpAngle
+            @startWarp system.name
+
+    render: ->
+        @renderNearbySystems()
+
+    renderNearbySystems: ->
+        if @leftInputIsActive or @rightInputIsActive and @nearestSystemsHudObjects.length
+            system = null
+            minDir = -1
+            a2 = Phaser.Math.wrapAngle @player.spr.rotation, true
+            for i of @nearestSystems
+                a1 = Phaser.Math.wrapAngle  @nearestSystems[i].angle, true
+                angleDist = Math.abs a1-a2
+
+                if angleDist < minDir or minDir<0
+                    if angleDist<@minWarpAngle
+                        minDir = angleDist
+                        system = @nearestSystems[i]
+
+            idx = @nearestSystems.indexOf system
+            for i of @nearestSystemsHudObjects
+                @nearestSystemsHudObjects[i].setStyle {
+                    fill: '#0bff0b'
+                    font: '12px'
+                }
+
+            if idx>=0
+                @nearestSystemsHudObjects[idx].setStyle {
+                    fill: '#ffffff'
+                    font: '12px'
+                }

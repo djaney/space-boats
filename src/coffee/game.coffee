@@ -176,12 +176,8 @@ do ->
                     @hud.endFill()
 
             # draw planets here
-            if @controls.nearestSystems
-                for i of @controls.nearestSystems
-                    @hud.beginFill 0x0BFF0B, 0.5
-                    @hud.drawCircle @game.width / 2, @game.height / 2, 50
-                    @hud.endFill()
-                    @game.debug.text @controls.nearestSystems[i].name , 50, 16 * i, '#00ff00'
+            @controls.render()
+
 
 
 
