@@ -2,8 +2,10 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var util = require(__dirname + '/utils.js');
+var util = require('./utils.js');
 var port = process.env.PORT || 9000;
+
+var Warp = require('./lib/warp');
 
 // if(process.env.NODE_ENV==='production'){
 // 	var cwd = __dirname + '/../src';
@@ -129,51 +131,7 @@ io.on('connection', function(client){
 			})();
 
 		}else if(params.action == 'warp:start'){
-			(function(){
-
-				for(var i in _players){
-					if (_players[i].socket.id!==client.id && _players[i].system==_players[client.id].system){
-						_players[i].socket.emit('player:remove',{
-							clientId:client.id
-						});
-					}
-				}
-				var randomSize = 500;
-				var entryPoint = {
-					x: Math.random() * randomSize - (randomSize/2),
-					y: Math.random() * randomSize - (randomSize/2),
-					rotation:  _players[client.id].physics[7]
-				}
-				if (_systemNames.indexOf(params.data)>=0){
-					_players[client.id].system = params.data
-					var otherPlayers = [];
-					for(var i in _players){
-						if (_players[i].socket.id!==client.id && _players[i].system==_players[client.id].system){
-							_players[i].socket.emit('player:add',{
-								profile:_players[client.id].profile,
-								system:_players[client.id].system,
-								clientId:client.id,
-								entryPoint:entryPoint
-							});
-							otherPlayers.push({
-								profile:_players[i].profile,
-								system:_players[i].system,
-								clientId:i
-							});
-						}
-
-					}
-					client.emit('player:controls', {
-						action: params.action,
-						data:{
-							otherPlayers: otherPlayers,
-							system: _players[client.id].system,
-							entryPoint: entryPoint
-						}
-					});
-				}
-
-			})();
+			Warp.warpStart(_players, client, _systemNames, params);
 
 		}
 	});
