@@ -6,6 +6,7 @@ var util = require('./utils.js');
 var port = process.env.PORT || 9000;
 
 var Warp = require('./lib/warp');
+var System = require('./lib/system');
 
 // if(process.env.NODE_ENV==='production'){
 // 	var cwd = __dirname + '/../src';
@@ -21,31 +22,8 @@ var _players = {};
 var _systems = require(cwd+ '/map.json');
 var _systemNames = [];
 var _nearbySystems = [];
-var _nearbyDistance = 300;
-for(var i in _systems){
-	_systemNames.push(i);
-	_nearbySystems[i] = [];
-	for(var j in _systems){
-		if(i!=j){
-			var a = _systems[i];
-			var b = _systems[j];
 
-			var distance = Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
-			var angleDeg = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
-			if(distance<_nearbyDistance){
-				_nearbySystems[i].push({
-					name: j,
-					angle: angleDeg
-				});
-			}
-
-		}
-
-	}
-	if(_nearbySystems[i].length==0){
-		console.error(i+" has no nearby system");
-	}
-}
+System.init(_systems, _nearbySystems, _systemNames);
 
 io.on('connection', function(client){
 	_players[client.id] = {
