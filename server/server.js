@@ -122,7 +122,7 @@ io.on('connection', function(client){
 	client.on('player:controls', function(params){
 
 		if(params.action == 'warp:init'){
-			Warp.warpInit(_players, _nearbySystems, client, params);
+			Warp.warpInit(_players, client, _nearbySystems, params);
 		}else if(params.action == 'warp:start'){
 			Warp.warpStart(_players, client, _systemNames, params);
 

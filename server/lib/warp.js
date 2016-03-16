@@ -1,5 +1,5 @@
 module.exports = {
-    warpInit:function(_players, _nearbySystems, client, params){
+    warpInit:function(_players, client, _nearbySystems, params){
         var names = _nearbySystems[_players[client.id].system];
         client.emit('player:controls', {
             action: params.action,
