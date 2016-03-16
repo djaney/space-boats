@@ -1,4 +1,11 @@
 module.exports = {
+    warpInit:function(_players, _nearbySystems, client, params){
+        var names = _nearbySystems[_players[client.id].system];
+        client.emit('player:controls', {
+            action: params.action,
+            data:names
+        });
+    },
     warpStart:function(_players, client, _systemNames, params){
         for(var i in _players){
             if (_players[i].socket.id!==client.id && _players[i].system==_players[client.id].system){

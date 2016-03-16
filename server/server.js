@@ -122,14 +122,7 @@ io.on('connection', function(client){
 	client.on('player:controls', function(params){
 
 		if(params.action == 'warp:init'){
-			(function(){
-				var names = _nearbySystems[_players[client.id].system];
-				client.emit('player:controls', {
-					action: params.action,
-					data:names
-				});
-			})();
-
+			Warp.warpInit(_players, _nearbySystems, client, params);
 		}else if(params.action == 'warp:start'){
 			Warp.warpStart(_players, client, _systemNames, params);
 
