@@ -8,7 +8,7 @@ module.exports = {
     },
     warpStart:function(_players, client, _systemNames, params){
         for(var i in _players){
-            if (_players[i].socket.id!==client.id && _players[i].system==_players[client.id].system){
+            if (i!==client.id && _players[i].system==_players[client.id].system){
                 _players[i].socket.emit('player:remove',{
                     clientId:client.id
                 });
@@ -24,7 +24,7 @@ module.exports = {
             _players[client.id].system = params.data
             var otherPlayers = [];
             for(var i in _players){
-                if (_players[i].socket.id!==client.id && _players[i].system==_players[client.id].system){
+                if (i!==client.id && _players[i].system==_players[client.id].system){
                     _players[i].socket.emit('player:add',{
                         profile:_players[client.id].profile,
                         system:_players[client.id].system,

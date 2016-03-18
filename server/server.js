@@ -32,7 +32,7 @@ io.on('connection', function(client){
 	client.on('disconnect', function(){
 		// add player to all clients
 		for(var i in _players){
-			if (_players[i].socket.id!==client.id && _players[i].system==_players[client.id].system){
+			if (i!==client.id && _players[i].system==_players[client.id].system){
 				_players[i].socket.emit('player:remove',{
 					clientId:client.id
 				});
@@ -59,7 +59,7 @@ io.on('connection', function(client){
 		// add player to all clients
 		var otherPlayers = []
 		for(var i in _players){
-			if (_players[i].socket.id!==client.id && _players[i].system==_players[client.id].system){
+			if (i!==client.id && _players[i].system==_players[client.id].system){
 				// notify other players
 
 
@@ -124,7 +124,7 @@ setInterval(function(){
 				if(_players[j].physics && _players[j].system===_players[i].system){
 					phy.push({
 						type:'player',
-						clientId:_players[j].socket.id,
+						clientId:j,
 						physics:_players[j].physics
 					});
 				}
