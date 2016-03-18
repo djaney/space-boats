@@ -26,14 +26,12 @@ var _nearbySystems = [];
 System.init(_systems, _nearbySystems, _systemNames);
 
 io.on('connection', function(client){
-	_players[client.id] = {
-		socket:client
-	};
+	_players[client.id] = {};
 	client.on('disconnect', function(){
 		// add player to all clients
 		for(var i in _players){
 			if (i!==client.id && _players[i].system==_players[client.id].system){
-				_players[i].socket.emit('player:remove',{
+				io.sockets.connected[i].emit('player:remove',{
 					clientId:client.id
 				});
 			}
@@ -64,7 +62,7 @@ io.on('connection', function(client){
 
 
 
-				_players[i].socket.emit('player:add',{
+				io.sockets.connected[i].emit('player:add',{
 					profile:_players[client.id].profile,
 					system:_players[client.id].system,
 					clientId:client.id,
@@ -100,9 +98,9 @@ io.on('connection', function(client){
 	client.on('player:controls', function(params){
 
 		if(params.action == 'warp:init'){
-			Warp.warpInit(_players, client, _nearbySystems, params);
+			Warp.warpInit(io, _players, client, _nearbySystems, params);
 		}else if(params.action == 'warp:start'){
-			Warp.warpStart(_players, client, _systemNames, params);
+			Warp.warpStart(io, _players, client, _systemNames, params);
 
 		}
 	});
@@ -111,7 +109,7 @@ io.on('connection', function(client){
 setInterval(function(){
 	for(var i in _players){
 		if(process.uptime() - _players[i].lastPhysicsUpdate > 5){
-			_players[i].socket.disconnect();
+			io.sockets.connected[i].disconnect();
 		}
 	}
 },2500);
@@ -130,7 +128,7 @@ setInterval(function(){
 				}
 			}
 			if(phy.length>0){
-				_players[i].socket.emit('physics:update',phy);
+				io.sockets.connected[i].emit('physics:update',phy);
 			}
 			delete phy;
 		}

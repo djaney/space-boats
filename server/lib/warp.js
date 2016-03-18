@@ -1,15 +1,16 @@
 module.exports = {
-    warpInit:function(_players, client, _nearbySystems, params){
+    warpInit:function(io, _players, client, _nearbySystems, params){
         var names = _nearbySystems[_players[client.id].system];
         client.emit('player:controls', {
             action: params.action,
             data:names
         });
     },
-    warpStart:function(_players, client, _systemNames, params){
+    warpStart:function(io, _players, client, _systemNames, params){
         for(var i in _players){
             if (i!==client.id && _players[i].system==_players[client.id].system){
-                _players[i].socket.emit('player:remove',{
+
+                io.sockets.connected[i].socket.emit('player:remove',{
                     clientId:client.id
                 });
             }
@@ -25,7 +26,7 @@ module.exports = {
             var otherPlayers = [];
             for(var i in _players){
                 if (i!==client.id && _players[i].system==_players[client.id].system){
-                    _players[i].socket.emit('player:add',{
+                    io.sockets.connected[i].emit('player:add',{
                         profile:_players[client.id].profile,
                         system:_players[client.id].system,
                         clientId:client.id,
