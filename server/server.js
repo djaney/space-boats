@@ -12,6 +12,7 @@ var Warp = require('./lib/Warp');
 var System = require('./lib/System');
 var Account = require('./lib/Account');
 var Physics = require('./lib/Physics');
+var Globals = require('./lib/Globals');
 
 var cwd = __dirname + '/../dist';
 
@@ -21,10 +22,13 @@ app.use(express.static(cwd));
 app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/build/phaser.min.js'));
 
 var _globalData = {
-	_players: {},
-	_systems: require(cwd+ '/map.json'),
-	_systemNames: [],
-	_nearbySystems: []
+	players: {},
+	systems: require(cwd+ '/map.json'),
+	systemNames: [],
+	nearbySystems: [],
+	sync: function(){
+
+	}
 } ;
 
 System.init(_globalData);
@@ -45,10 +49,11 @@ io.on('connection', function(client){
 	});
 });
 
+
 // slow loop
 setInterval(function(){
-	for(var i in _globalData._players){
-		if(process.uptime() - _globalData._players[i].lastPhysicsUpdate > 5){
+	for(var i in _globalData.players){
+		if(process.uptime() - _globalData.players[i].lastPhysicsUpdate > 5){
 			io.sockets.connected[i].disconnect();
 		}
 	}
@@ -58,9 +63,9 @@ setInterval(function(){
 setInterval(function(){
 	var phy = {};
 	var players = {};
-	for(var i in _globalData._players){
-		var sys = _globalData._players.system;
-		if( !phy.hasOwnProperty(_globalData._players.system) ){
+	for(var i in _globalData.players){
+		var sys = _globalData.players.system;
+		if( !phy.hasOwnProperty(_globalData.players.system) ){
 			phy[sys] = [];
 			players[sys] = [];
 		}
@@ -68,7 +73,7 @@ setInterval(function(){
 		phy[sys].push({
 			type:'player',
 			clientId:i,
-			physics:_globalData._players[i].physics
+			physics:_globalData.players[i].physics
 		});
 	}
 	for(var sys in players){

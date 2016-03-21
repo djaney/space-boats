@@ -1,16 +1,16 @@
 module.exports = {
     warpInit:function(_globalData, client, params){
-        var names = _globalData._nearbySystems[_globalData._players[client.id].system];
+        var names = _globalData.nearbySystems[_globalData.players[client.id].system];
         client.emit('player:controls', {
             action: params.action,
             data:names
         });
     },
     warpStart:function(io, _globalData, client, params){
-        var _players = _globalData._players;
-        var _systemNames = _globalData._systemNames;
-        for(var i in _players){
-            if (i!==client.id && _players[i].system==_players[client.id].system){
+        var players = _globalData.players;
+        var systemNames = _globalData.systemNames;
+        for(var i in players){
+            if (i!==client.id && players[i].system==players[client.id].system){
 
                 io.sockets.connected[i].socket.emit('player:remove',{
                     clientId:client.id
@@ -21,22 +21,22 @@ module.exports = {
         var entryPoint = {
             x: Math.random() * randomSize - (randomSize/2),
             y: Math.random() * randomSize - (randomSize/2),
-            rotation:  _players[client.id].physics[7]
+            rotation:  players[client.id].physics[7]
         }
-        if (_systemNames.indexOf(params.data)>=0){
-            _players[client.id].system = params.data
+        if (systemNames.indexOf(params.data)>=0){
+            players[client.id].system = params.data
             var otherPlayers = [];
-            for(var i in _players){
-                if (i!==client.id && _players[i].system==_players[client.id].system){
+            for(var i in players){
+                if (i!==client.id && players[i].system==players[client.id].system){
                     io.sockets.connected[i].emit('player:add',{
-                        profile:_players[client.id].profile,
-                        system:_players[client.id].system,
+                        profile:players[client.id].profile,
+                        system:players[client.id].system,
                         clientId:client.id,
                         entryPoint:entryPoint
                     });
                     otherPlayers.push({
-                        profile:_players[i].profile,
-                        system:_players[i].system,
+                        profile:players[i].profile,
+                        system:players[i].system,
                         clientId:i
                     });
                 }
@@ -46,7 +46,7 @@ module.exports = {
                 action: params.action,
                 data:{
                     otherPlayers: otherPlayers,
-                    system: _players[client.id].system,
+                    system: players[client.id].system,
                     entryPoint: entryPoint
                 }
             });

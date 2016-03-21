@@ -1,12 +1,12 @@
 module.exports = {
     listen: function(io, client, _globalData){
-        _globalData._players[client.id] = {};
+        _globalData.players[client.id] = {};
         client.on('account:login', function(u){
-    		_globalData._players[client.id].profile = u;
+    		_globalData.players[client.id].profile = u;
     		// set random system
-    		// var playerSystem = util.randomProperty(_globalData._systems);
+    		// var playerSystem = util.randomProperty(_globalData.systems);
     		var playerSystem = "Sol";
-    		_globalData._players[client.id].system = playerSystem;
+    		_globalData.players[client.id].system = playerSystem;
 
     		var randomSize = 500;
     		var entryPoint = {
@@ -17,21 +17,21 @@ module.exports = {
 
     		// add player to all clients
     		var otherPlayers = []
-    		for(var i in _globalData._players){
-    			if (i!==client.id && _globalData._players[i].system==_globalData._players[client.id].system){
+    		for(var i in _globalData.players){
+    			if (i!==client.id && _globalData.players[i].system==_globalData.players[client.id].system){
     				// notify other players
 
 
 
     				io.sockets.connected[i].emit('player:add',{
-    					profile:_globalData._players[client.id].profile,
-    					system:_globalData._players[client.id].system,
+    					profile:_globalData.players[client.id].profile,
+    					system:_globalData.players[client.id].system,
     					clientId:client.id,
     					entryPoint:entryPoint
     				});
     				otherPlayers.push({
-    					profile:_globalData._players[i].profile,
-    					system:_globalData._players[i].system,
+    					profile:_globalData.players[i].profile,
+    					system:_globalData.players[i].system,
     					clientId:i
     				});
     			}
@@ -49,14 +49,14 @@ module.exports = {
     	});
         client.on('disconnect', function(){
             // add player to all clients
-            for(var i in _globalData._players){
-                if (i!==client.id && _globalData._players[i].system==_globalData._players[client.id].system){
+            for(var i in _globalData.players){
+                if (i!==client.id && _globalData.players[i].system==_globalData.players[client.id].system){
                     io.sockets.connected[i].emit('player:remove',{
                         clientId:client.id
                     });
                 }
             }
-            delete _globalData._players[client.id];
+            delete _globalData.players[client.id];
 
         });
     }
