@@ -27,7 +27,6 @@ System.init(_globalData);
 io.on('connection', function(client){
 
 	Account.listen(io, client, _globalData);
-
 	Physics.listen(client, _globalData);
 
 	client.on('player:controls', function(params){
@@ -41,6 +40,7 @@ io.on('connection', function(client){
 	});
 });
 
+// slow loop
 setInterval(function(){
 	for(var i in _globalData._players){
 		if(process.uptime() - _globalData._players[i].lastPhysicsUpdate > 5){
