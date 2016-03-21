@@ -1,6 +1,9 @@
 module.exports = {
     _nearbyDistance: 300,
-    init:function(_systems, _nearbySystems, _systemNames){
+    init:function(data){
+        var _systems = data._systems;
+        var _nearbySystems = data._nearbySystems;
+        var _systemNames = data._systemNames;
         for(var i in _systems){
         	_systemNames.push(i);
         	_nearbySystems[i] = [];

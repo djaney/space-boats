@@ -18,34 +18,36 @@ var cwd = __dirname + '/../dist';
 app.use(express.static(cwd));
 app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/build/phaser.min.js'));
 
-var _players = {};
-var _systems = require(cwd+ '/map.json');
-var _systemNames = [];
-var _nearbySystems = [];
+var _globalData = {
+	_players: {},
+	_systems: require(cwd+ '/map.json'),
+	_systemNames: [],
+	_nearbySystems: []
+} ;
 
-System.init(_systems, _nearbySystems, _systemNames);
+System.init(_globalData);
 
 io.on('connection', function(client){
-	_players[client.id] = {};
+	_globalData._players[client.id] = {};
 	client.on('disconnect', function(){
 		// add player to all clients
-		for(var i in _players){
-			if (i!==client.id && _players[i].system==_players[client.id].system){
+		for(var i in _globalData._players){
+			if (i!==client.id && _globalData._players[i].system==_globalData._players[client.id].system){
 				io.sockets.connected[i].emit('player:remove',{
 					clientId:client.id
 				});
 			}
 		}
-		delete _players[client.id];
+		delete _globalData._players[client.id];
 
 	});
 
 	client.on('account:login', function(u){
-		_players[client.id].profile = u;
+		_globalData._players[client.id].profile = u;
 		// set random system
-		// var playerSystem = util.randomProperty(_systems);
+		// var playerSystem = util.randomProperty(_globalData._systems);
 		var playerSystem = "Sol";
-		_players[client.id].system = playerSystem;
+		_globalData._players[client.id].system = playerSystem;
 
 		var randomSize = 500;
 		var entryPoint = {
@@ -56,21 +58,21 @@ io.on('connection', function(client){
 
 		// add player to all clients
 		var otherPlayers = []
-		for(var i in _players){
-			if (i!==client.id && _players[i].system==_players[client.id].system){
+		for(var i in _globalData._players){
+			if (i!==client.id && _globalData._players[i].system==_globalData._players[client.id].system){
 				// notify other players
 
 
 
 				io.sockets.connected[i].emit('player:add',{
-					profile:_players[client.id].profile,
-					system:_players[client.id].system,
+					profile:_globalData._players[client.id].profile,
+					system:_globalData._players[client.id].system,
 					clientId:client.id,
 					entryPoint:entryPoint
 				});
 				otherPlayers.push({
-					profile:_players[i].profile,
-					system:_players[i].system,
+					profile:_globalData._players[i].profile,
+					system:_globalData._players[i].system,
 					clientId:i
 				});
 			}
@@ -91,24 +93,24 @@ io.on('connection', function(client){
 
 	client.on('physics:update', function(params){
 		params.timestamp = process.uptime();
-		_players[client.id].physics = params;
-		_players[client.id].lastPhysicsUpdate = process.uptime();
+		_globalData._players[client.id].physics = params;
+		_globalData._players[client.id].lastPhysicsUpdate = process.uptime();
 	});
 
 	client.on('player:controls', function(params){
 
 		if(params.action == 'warp:init'){
-			Warp.warpInit(io, _players, client, _nearbySystems, params);
+			Warp.warpInit(_globalData, client, params);
 		}else if(params.action == 'warp:start'){
-			Warp.warpStart(io, _players, client, _systemNames, params);
+			Warp.warpStart(io, _globalData, client, params);
 
 		}
 	});
 });
 
 setInterval(function(){
-	for(var i in _players){
-		if(process.uptime() - _players[i].lastPhysicsUpdate > 5){
+	for(var i in _globalData._players){
+		if(process.uptime() - _globalData._players[i].lastPhysicsUpdate > 5){
 			io.sockets.connected[i].disconnect();
 		}
 	}
@@ -116,14 +118,14 @@ setInterval(function(){
 
 // server fast loop
 setInterval(function(){
-		for(var i in _players){
+		for(var i in _globalData._players){
 			var phy = [];
-			for(var j in _players){
-				if(_players[j].physics && _players[j].system===_players[i].system){
+			for(var j in _globalData._players){
+				if(_globalData._players[j].physics && _globalData._players[j].system===_globalData._players[i].system){
 					phy.push({
 						type:'player',
 						clientId:j,
-						physics:_players[j].physics
+						physics:_globalData._players[j].physics
 					});
 				}
 			}
