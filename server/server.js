@@ -20,16 +20,20 @@ io.adapter(redis({ host: redisHost, port: redisPort }));
 
 app.use(express.static(cwd));
 app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/build/phaser.min.js'));
-
-var _globalData = {
-	players: {},
-	systems: require(cwd+ '/map.json'),
-	systemNames: [],
-	nearbySystems: [],
-	sync: function(){
-
-	}
-} ;
+var _globalData = new Globals();
+_globalData.players = {};
+_globalData.systems = require(cwd+ '/map.json');
+_globalData.systemNames = [];
+_globalData.nearbySystems = [];
+// var _globalData = {
+// 	players: {},
+// 	systems: require(cwd+ '/map.json'),
+// 	systemNames: [],
+// 	nearbySystems: [],
+// 	sync: function(){
+//
+// 	}
+// } ;
 
 System.init(_globalData);
 
