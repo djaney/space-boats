@@ -1,5 +1,5 @@
 module.exports = {
-    listen: function(client, _globalData){
+    listen: function(io, client, _globalData){
         _globalData._players[client.id] = {};
         client.on('account:login', function(u){
     		_globalData._players[client.id].profile = u;

@@ -8,6 +8,7 @@ var port = process.env.PORT || 9000;
 var Warp = require('./lib/Warp');
 var System = require('./lib/System');
 var Account = require('./lib/Account');
+var Physics = require('./lib/Physics');
 
 var cwd = __dirname + '/../dist';
 
@@ -25,13 +26,9 @@ System.init(_globalData);
 
 io.on('connection', function(client){
 
-	Account.listen(client, _globalData);
+	Account.listen(io, client, _globalData);
 
-	client.on('physics:update', function(params){
-		params.timestamp = process.uptime();
-		_globalData._players[client.id].physics = params;
-		_globalData._players[client.id].lastPhysicsUpdate = process.uptime();
-	});
+	Physics.listen(client, _globalData);
 
 	client.on('player:controls', function(params){
 
