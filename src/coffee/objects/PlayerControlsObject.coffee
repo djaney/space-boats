@@ -122,7 +122,7 @@ class PlayerControlsObject
         system = null
         for i of @nearestSystemsHudObjects
             @game.world.remove @nearestSystemsHudObjects[i]
-        # @nearestSystemsHudObjects = []
+        @nearestSystemsHudObjects = []
         minDir = -1
         a2 = Phaser.Math.wrapAngle @player.spr.rotation, true
         for i of @nearestSystems
@@ -162,7 +162,7 @@ class PlayerControlsObject
                     font: '12px'
                 }
 
-            if idx>=0
+            if idx>=0 and @nearestSystemsHudObjects[idx]
                 @nearestSystemsHudObjects[idx].setStyle {
                     fill: '#ffffff'
                     font: '12px'
