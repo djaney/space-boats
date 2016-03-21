@@ -8,11 +8,6 @@ var port = process.env.PORT || 9000;
 var Warp = require('./lib/warp');
 var System = require('./lib/system');
 
-// if(process.env.NODE_ENV==='production'){
-// 	var cwd = __dirname + '/../src';
-// }else{
-//
-// }
 var cwd = __dirname + '/../dist';
 
 app.use(express.static(cwd));
@@ -85,8 +80,6 @@ io.on('connection', function(client){
 			otherPlayers:otherPlayers,
 			entryPoint:entryPoint
 		});
-		// notify new client of other players
-		// client.emit('player:add',otherPlayers);
 		delete otherPlayers;
 
 	});
