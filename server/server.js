@@ -51,23 +51,26 @@ setInterval(function(){
 
 // server fast loop
 setInterval(function(){
-		for(var i in _globalData._players){
-			var phy = [];
-			for(var j in _globalData._players){
-				if(_globalData._players[j].physics && _globalData._players[j].system===_globalData._players[i].system){
-					phy.push({
-						type:'player',
-						clientId:j,
-						physics:_globalData._players[j].physics
-					});
-				}
-			}
-			if(phy.length>0){
-				io.sockets.connected[i].emit('physics:update',phy);
-			}
-			delete phy;
+	var phy = {};
+	var players = {};
+	for(var i in _globalData._players){
+		var sys = _globalData._players.system;
+		if( !phy.hasOwnProperty(_globalData._players.system) ){
+			phy[sys] = [];
+			players[sys] = [];
 		}
-
+		players[sys].push(i);
+		phy[sys].push({
+			type:'player',
+			clientId:i,
+			physics:_globalData._players[i].physics
+		});
+	}
+	for(var sys in players){
+		for(var p in players[sys]){
+			io.sockets.connected[players[sys][p]].emit('physics:update',phy[sys]);
+		}
+	}
 
 },100);
 
