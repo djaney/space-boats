@@ -5,7 +5,7 @@ var io = require('socket.io')(http);
 var redis = require('socket.io-redis');
 var util = require('./utils.js');
 var port = process.env.PORT || 9000;
-var redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
+var redisUrl = process.env.REDIS_URL || 'redis://h:p4jepfe1i57arnftef5tdc40uub@ec2-54-83-207-91.compute-1.amazonaws.com:12279';
 
 var Warp = require('./lib/warp');
 var System = require('./lib/system');
@@ -14,8 +14,9 @@ var Physics = require('./lib/physics');
 var Globals = require('./lib/globals');
 
 var cwd = __dirname + '/../dist';
-var redisOpt = require('redis-url').parse(redisUrl);
-io.adapter(redis(redisOpt));
+io.adapter(redis({
+	url: redisUrl,
+}));
 
 app.use(express.static(cwd));
 app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/build/phaser.min.js'));
