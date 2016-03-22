@@ -14,8 +14,8 @@ var Physics = require('./lib/physics');
 var Globals = require('./lib/globals');
 
 var cwd = __dirname + '/../dist';
-
-io.adapter(redis(redisUrl));
+var redisOpt = require('redis-url').parse(redisUrl);
+io.adapter(redis(redisOpt));
 
 app.use(express.static(cwd));
 app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/build/phaser.min.js'));
