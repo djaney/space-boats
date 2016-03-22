@@ -14,6 +14,8 @@
     "gulp-processhtml": "*",
     "gulp-util": "*",
     "phaser": "^2.4.6",
+    "redis": "^2.5.3",
+    "redis-url": "^1.2.1",
     "socket.io": "^1.3.7",
     "socket.io-redis": "^1.0.0",
     "xml2js": "*"

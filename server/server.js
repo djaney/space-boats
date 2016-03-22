@@ -2,7 +2,8 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var redis = require('socket.io-redis');
+var redis = require('redis').createClient;
+var socketRedisAdapter = require('socket.io-redis');
 var util = require('./utils.js');
 var port = process.env.PORT || 9000;
 var redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
@@ -15,8 +16,13 @@ var Globals = require('./lib/globals');
 
 var cwd = __dirname + '/../dist';
 
-redisUrl = redisUrl.replace(/^redis:\/\//,'');
-io.adapter(redis(redisUrl));
+var redisOpt = require('redis-url').parse(redisUrl);
+
+var socketRedisPub = redis(redisOpt.port, redisOpt.hostname, { auth_pass: redisOpt.password });
+var socketRedisSub = redis(redisOpt.port, redisOpt.hostname, { return_buffers: true, auth_pass: redisOpt.password });
+io.adapter(socketRedisAdapter({ pubClient: socketRedisPub, subClient: socketRedisSub }));
+
+console.log(redisUrl,redisOpt);
 
 app.use(express.static(cwd));
 app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/build/phaser.min.js'));
