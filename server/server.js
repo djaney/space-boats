@@ -7,11 +7,11 @@ var util = require('./utils.js');
 var port = process.env.PORT || 9000;
 var redisUrl = process.env.REDIS_URL || 'localhost:6379';
 
-var Warp = require(__dirname+'/lib/Warp');
-var System = require(__dirname+'/lib/System');
-var Account = require(__dirname+'/lib/Account');
-var Physics = require(__dirname+'/lib/Physics');
-var Globals = require(__dirname+'/lib/Globals');
+var Warp = require('./lib/warp');
+var System = require('./lib/system');
+var Account = require('./lib/account');
+var Physics = require('./lib/physics');
+var Globals = require('./lib/globals');
 
 var cwd = __dirname + '/../dist';
 
