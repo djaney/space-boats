@@ -15,7 +15,7 @@ var Globals = require('./lib/Globals');
 
 var cwd = __dirname + '/../dist';
 
-io.adapter(redisUrl);
+io.adapter(redis(redisUrl));
 
 app.use(express.static(cwd));
 app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/build/phaser.min.js'));
