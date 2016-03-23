@@ -23,18 +23,20 @@ module.exports = {
     				// notify other players
 
 
+                    if(io.sockets.connected[i]){
+                        io.sockets.connected[i].emit('player:add',{
+        					profile:_globalData.players[client.id].profile,
+        					system:_globalData.players[client.id].system,
+        					clientId:client.id,
+        					entryPoint:entryPoint
+        				});
+        				otherPlayers.push({
+        					profile:_globalData.players[i].profile,
+        					system:_globalData.players[i].system,
+        					clientId:i
+        				});
+                    }
 
-    				io.sockets.connected[i].emit('player:add',{
-    					profile:_globalData.players[client.id].profile,
-    					system:_globalData.players[client.id].system,
-    					clientId:client.id,
-    					entryPoint:entryPoint
-    				});
-    				otherPlayers.push({
-    					profile:_globalData.players[i].profile,
-    					system:_globalData.players[i].system,
-    					clientId:i
-    				});
     			}
     		}
     		// login new player
@@ -52,9 +54,12 @@ module.exports = {
             // add player to all clients
             for(var i in _globalData.players){
                 if (i!==client.id && _globalData.players[i].system==_globalData.players[client.id].system){
-                    io.sockets.connected[i].emit('player:remove',{
-                        clientId:client.id
-                    });
+                    if(io.sockets.connected[i]){
+                        io.sockets.connected[i].emit('player:remove',{
+                            clientId:client.id
+                        });
+                    }
+
                 }
             }
             _globalData.players[client.id].destroy();

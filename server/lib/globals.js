@@ -1,61 +1,59 @@
 var redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
 var clientPub = require('redis').createClient(redisUrl);
 var clientSub = require('redis').createClient(redisUrl);
+clientPub.setMaxListeners(0);
+clientSub.setMaxListeners(0);
 var Player = require('./player');
+var cwd = __dirname + '/../../dist';
 
 var Globals = function() {
     var _this = this;
+    this.players = {};
+    this.systems = require(cwd+ '/map.json');
+    this.systemNames = [];
+    this.nearbySystems = [];
     clientSub.on('message',function(channel, message){
         if(channel==Player.CH_CREATE){
             var id = JSON.parse(message);
-            if(!_this._players.hasOwnProperty(id)){
-                _this._players[id] = new Player(id, false);
+            if(!_this.players.hasOwnProperty(id)){
+                _this.players[id] = new Player(id, false);
             }
 
         }
         if(channel==Player.CH_DESTROY){
             var id = JSON.parse(message);
-            if(_this._players.hasOwnProperty(id)){
-                delete _this._players[id]
+            if(_this.players.hasOwnProperty(id)){
+                delete _this.players[id]
             }
 
         }
     });
     clientSub.subscribe(Player.CH_CREATE);
     clientSub.subscribe(Player.CH_DESTROY);
-};
-Object.defineProperty(Globals.prototype, 'players', {
-    get: function() {
 
-        return this._players;
-    },
-    set: function(val) {
-        console.log('set');
-        this._players = val;
-    }
-});
-Object.defineProperty(Globals.prototype, 'systems', {
-    get: function() {
-        return this._systems;
-    },
-    set: function(val) {
-        this._systems = val;
-    }
-});
-Object.defineProperty(Globals.prototype, 'systemNames', {
-    get: function() {
-        return this._systemNames;
-    },
-    set: function(val) {
-        this._systemNames = val;
-    }
-});
-Object.defineProperty(Globals.prototype, 'nearbySystems', {
-    get: function() {
-        return this._nearbySystems;
-    },
-    set: function(val) {
-        this._nearbySystems = val;
-    }
-});
+
+
+};
+Globals.prototype.loadPlayers = function(cb){
+    var _this = this;
+    clientPub.hgetall(Player.CH+'.pool',function(err, obj){
+        if(!err){
+            for(var i in obj){
+                var data = JSON.parse(obj[i]);
+                // console.log(data);
+                if(data.id){
+                    _this.players[data.id] = new Player(data.id, false);
+                    _this.players[data.id].physics = data.physics;
+                    _this.players[data.id].system = data.system;
+                    _this.players[data.id].lastPhysicsUpdate = data.lastPhysicsUpdate;
+                }
+
+            }
+            cb && cb();
+        }else{
+            throw err;
+        }
+    });
+
+}
 module.exports = Globals;
