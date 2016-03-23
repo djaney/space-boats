@@ -5,6 +5,7 @@
   "repository": "",
   "version": "0.0.0",
   "dependencies": {
+    "cluster": "^0.7.7",
     "del": "*",
     "express": "~4.13.3",
     "gulp": "*",

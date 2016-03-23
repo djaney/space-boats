@@ -1,6 +1,7 @@
+var Player = require('./player');
 module.exports = {
     listen: function(io, client, _globalData){
-        _globalData.players[client.id] = {};
+        _globalData.players[client.id] = new Player(client.id);
         client.on('account:login', function(u){
     		_globalData.players[client.id].profile = u;
     		// set random system
@@ -56,6 +57,7 @@ module.exports = {
                     });
                 }
             }
+            _globalData.players[client.id].destroy();
             delete _globalData.players[client.id];
 
         });

@@ -79,7 +79,10 @@ setInterval(function(){
 	}
 	for(var sys in players){
 		for(var p in players[sys]){
-			io.sockets.connected[players[sys][p]].emit('physics:update',phy[sys]);
+			if(io.sockets.connected[players[sys][p]]){
+				io.sockets.connected[players[sys][p]].emit('physics:update',phy[sys]);
+			}
+
 		}
 	}
 
