@@ -6,7 +6,6 @@ var Player = require('./player');
 var Globals = function() {
     var _this = this;
     clientSub.on('message',function(channel, message){
-        console.log(channel, message);
         if(channel==Player.CH_CREATE){
             var id = JSON.parse(message);
             if(!_this._players.hasOwnProperty(id)){
