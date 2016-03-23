@@ -11,10 +11,11 @@ module.exports = {
         var systemNames = _globalData.systemNames;
         for(var i in players){
             if (i!==client.id && players[i].system==players[client.id].system){
-
-                io.sockets.connected[i].socket.emit('player:remove',{
-                    clientId:client.id
-                });
+                if(io.sockets.connected[i]){
+                    io.sockets.connected[i].emit('player:remove',{
+                        clientId:client.id
+                    });
+                }
             }
         }
         var randomSize = 500;

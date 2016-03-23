@@ -22,7 +22,6 @@ var socketRedisPub = redis(redisOpt.port, redisOpt.hostname, { auth_pass: redisO
 var socketRedisSub = redis(redisOpt.port, redisOpt.hostname, { return_buffers: true, auth_pass: redisOpt.password });
 io.adapter(socketRedisAdapter({ pubClient: socketRedisPub, subClient: socketRedisSub }));
 
-console.log(redisUrl,redisOpt);
 
 app.use(express.static(cwd));
 app.use('/phaser.min.js',express.static(__dirname + '/../node_modules/phaser/build/phaser.min.js'));
@@ -31,15 +30,7 @@ _globalData.players = {};
 _globalData.systems = require(cwd+ '/map.json');
 _globalData.systemNames = [];
 _globalData.nearbySystems = [];
-// var _globalData = {
-// 	players: {},
-// 	systems: require(cwd+ '/map.json'),
-// 	systemNames: [],
-// 	nearbySystems: [],
-// 	sync: function(){
-//
-// 	}
-// } ;
+
 
 System.init(_globalData);
 
